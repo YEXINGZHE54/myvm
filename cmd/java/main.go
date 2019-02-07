@@ -4,6 +4,8 @@ import (
 	"flag"
 	"os"
 	"fmt"
+	"strings"
+	"myvm/pkg/classpath"
 )
 
 type (
@@ -13,6 +15,7 @@ type (
 		classpath string
 		class string
 		args []string
+		jrePath string
 	}
 )
 
@@ -26,6 +29,7 @@ func parseCmd() *CmdOptions {
 	flag.BoolVar(&cmd.help, "help", false, "print help message")
 	flag.BoolVar(&cmd.version, "version", false, "print version")
 	flag.StringVar(&cmd.classpath, "cp", "", "set classpath")
+	flag.StringVar(&cmd.jrePath, "Xjre", "", "path to jre lib")
 	flag.Parse()
 	args := flag.Args()
 	if len(args) > 0 {
@@ -48,6 +52,13 @@ func main()  {
 }
 
 func start(opt *CmdOptions) {
+	cp := classpath.ParseOption(opt.jrePath, opt.classpath)
 	fmt.Printf("class: %s, classpath: %s, args: %v\n", 
 		opt.class, opt.classpath, opt.args)
+	clsname := strings.Replace(opt.class, ".", "/", -1)
+	data, _, err := cp.ReadClass(clsname)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("class byte: %v\n", data)
 }
