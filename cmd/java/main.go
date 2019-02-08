@@ -4,8 +4,7 @@ import (
 	"flag"
 	"os"
 	"fmt"
-	"strings"
-	"myvm/pkg/classpath"
+	"myvm/pkg/vm"
 )
 
 type (
@@ -52,13 +51,10 @@ func main()  {
 }
 
 func start(opt *CmdOptions) {
-	cp := classpath.ParseOption(opt.jrePath, opt.classpath)
 	fmt.Printf("class: %s, classpath: %s, args: %v\n", 
 		opt.class, opt.classpath, opt.args)
-	clsname := strings.Replace(opt.class, ".", "/", -1)
-	data, _, err := cp.ReadClass(clsname)
-	if err != nil {
+	machine := vm.NewVM(opt.jrePath, opt.classpath)
+	if err := machine.Startup(opt.class, opt.args); err != nil {
 		panic(err)
 	}
-	fmt.Printf("class byte: %v\n", data)
 }
