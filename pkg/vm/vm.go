@@ -1,9 +1,10 @@
 package vm
 
 import (
-	"fmt"
+	"github.com/kr/pretty"
 	"strings"
 	"myvm/pkg/vm/loader/classpath"
+	"myvm/pkg/vm/loader/classfile"
 )
 
 type (
@@ -24,9 +25,13 @@ func (vm *VMImpl) Startup(class string, args []string) (err error) {
 	clsname := strings.Replace(class, ".", "/", -1)
 	data, _, err := vm.cp.ReadClass(clsname)
 	if err != nil {
-		panic(err)
+		return
 	}
-	fmt.Printf("class byte: %v\n", data)
+	cf, err := classfile.Parse(data)
+	if err != nil {
+		return
+	}
+	pretty.Println(cf)
 	return
 }
 
