@@ -5,6 +5,7 @@ import (
 	"os"
 	"fmt"
 	"myvm/pkg/vm"
+	_ "myvm/pkg/vm/engine/impl"
 )
 
 type (
