@@ -37,6 +37,23 @@ type (
 		MaxLocal int
 		Codes []byte
 	}
+	ClsRef struct {
+		Name string
+		Ref *Class
+	}
+	MemberRef struct {
+		ClsName string
+		Name string
+		Desc string
+	}
+	FieldRef struct {
+		MemberRef
+		Ref *Field
+	}
+	MethodRef struct {
+		MemberRef
+		Ref *Method
+	}
 )
 
 const (

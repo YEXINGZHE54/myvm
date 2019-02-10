@@ -96,8 +96,12 @@ func (f *ClassFile) parseConstant(r *Reader) (consts []Constant, err error) {
 			consts[i] = ClassConst(r.read2())
 		case CONSTANT_NameAndType:
 			consts[i] = &NameTypeConst{r.read2(), r.read2()}
-		case CONSTANT_Field, CONSTANT_Method, CONSTANT_InterfaceMethod:
-			consts[i] = &MemberConst{r.read2(), r.read2()}
+		case CONSTANT_Field:
+			consts[i] = &FieldConst{r.read2(), r.read2()}
+		case CONSTANT_Method:
+			consts[i] = &MethodConst{r.read2(), r.read2()}
+		case CONSTANT_InterfaceMethod:
+			consts[i] = &IfaceMethodConst{r.read2(), r.read2()}
 		default:
 			println("const type: ")
 			println(r.index)

@@ -42,9 +42,17 @@ type (
 		name u2
 		desc u2
 	}
-	MemberConst struct {
-		class u2
-		nametype u2
+	FieldConst struct {
+		Class u2
+		Nametype u2
+	}
+	MethodConst struct {
+		Class u2
+		Nametype u2
+	}
+	IfaceMethodConst struct {
+		Class u2
+		Nametype u2
 	}
 	// attr types
 	LineNumber struct {
@@ -72,3 +80,14 @@ type (
 		catch_type u2
 	}
 )
+
+func ToIdx(v interface{}) u2 {
+	switch val := v.(type) {
+	case StringConst:
+		return u2(val)
+	case ClassConst:
+		return u2(val)
+	default:
+	}
+	return v.(u2)
+}
