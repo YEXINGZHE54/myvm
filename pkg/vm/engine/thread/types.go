@@ -10,5 +10,6 @@ type (
 		pc int
 		vm myvm.VM
 		stack *stack.Stack
+		class string
 	}
 )

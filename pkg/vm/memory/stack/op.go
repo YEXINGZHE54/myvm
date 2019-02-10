@@ -4,6 +4,22 @@ import (
 	"myvm/pkg/vm/engine/data"
 )
 
+func (f *Frame) SetPC(pc int) {
+	f.pc = pc
+}
+
+func (f *Frame) GetPC() int {
+	return f.pc
+}
+
+func (f *Frame) Exited() bool {
+	return f.pc < 0
+}
+
+func (f *Frame) Exit() {
+	f.pc = -1
+}
+
 func (f *Frame) SetLocalVal(idx int, val int) {
 	f.localVars[idx].val = val
 }

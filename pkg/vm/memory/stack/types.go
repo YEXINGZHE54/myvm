@@ -12,6 +12,7 @@ type (
 	Frame struct {
 		localVars []Slot
 		opStack *OPStack
+		pc int
 	}
 	OPStack struct {
 		top int

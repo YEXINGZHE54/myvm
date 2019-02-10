@@ -1,8 +1,13 @@
 package vm
 
+import (
+	"myvm/pkg/vm/loader/classfile"
+)
+
 type (
 	VM interface {
 		Startup(class string, args []string) error
+		LoadClass(class string) (cf *classfile.ClassFile, err error)
 	}
 	VMConstructor func(bootPath, classPath string) VM
 )

@@ -59,11 +59,11 @@ type (
 		index u2
 	}
 	Code struct {
-		max_stacks u2
-		max_locals u2
+		MaxStacks u2
+		MaxLocals u2
 		codes []byte
-		exceptions []ExceptionHandle
-		attributes []Attribute
+		Exceptions []ExceptionHandle
+		Attributes []Attribute
 	}
 	ExceptionHandle struct {
 		start_pc u2
