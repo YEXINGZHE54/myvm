@@ -9,16 +9,22 @@ import (
 
 type (
 	loader struct {
+		classes map[string]*reflect.Class
 		cp *classpath.ClassPath
 	}
 )
 
 func NewLoader(bootPath, classPath string) (l reflect.Loader) {
-	l = &loader{classpath.ParseOption(bootPath, classPath)}
+	l = &loader{make(map[string]*reflect.Class),classpath.ParseOption(bootPath, classPath)}
 	return
 }
 
 func (l *loader) LoadClass(cls string) (c *reflect.Class, err error) {
+	// try cache
+	c, ok := l.classes[cls]
+	if ok {
+		return
+	}
 	// read classfile
 	clsname := strings.Replace(cls, ".", "/", -1)
 	data, _, err := l.cp.ReadClass(clsname)
@@ -54,6 +60,8 @@ func (l *loader) LoadClass(cls string) (c *reflect.Class, err error) {
 	
 	// initialzie
 
+	// finnaly record it
+	l.classes[cls] = c
 	return
 }
 
