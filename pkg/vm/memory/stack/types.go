@@ -1,7 +1,7 @@
 package stack
 
 import (
-	"myvm/pkg/vm/engine/data"
+	"myvm/pkg/vm/engine/reflect"
 )
 
 type (
@@ -20,6 +20,6 @@ type (
 	}
 	Slot struct {
 		val int
-		ref *data.Object
+		ref *reflect.Object
 	}
 )

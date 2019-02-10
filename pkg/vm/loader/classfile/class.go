@@ -40,5 +40,5 @@ func (m *Member) GetCode() *Code {
 }
 
 func (c *Code) GetReader() *CodeReader {
-	return NewCodeReader(c.codes)
+	return NewCodeReader(c.Codes)
 }

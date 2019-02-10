@@ -1,13 +1,13 @@
 package vm
 
 import (
-	"myvm/pkg/vm/loader/classfile"
+	"myvm/pkg/vm/engine/reflect"
 )
 
 type (
 	VM interface {
 		Startup(class string, args []string) error
-		LoadClass(class string) (cf *classfile.ClassFile, err error)
+		LoadClass(class string) (cf *reflect.Class, err error)
 	}
 	VMConstructor func(bootPath, classPath string) VM
 )

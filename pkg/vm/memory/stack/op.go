@@ -1,7 +1,7 @@
 package stack
 
 import (
-	"myvm/pkg/vm/engine/data"
+	"myvm/pkg/vm/engine/reflect"
 )
 
 func (f *Frame) SetPC(pc int) {
@@ -28,11 +28,11 @@ func (f *Frame) GetLocalVal(idx int) int {
 	return f.localVars[idx].val
 }
 
-func (f *Frame) SetLocalRef(idx int, ref *data.Object) {
+func (f *Frame) SetLocalRef(idx int, ref *reflect.Object) {
 	f.localVars[idx].ref = ref
 }
 
-func (f *Frame) GetLocalRef(idx int) *data.Object {
+func (f *Frame) GetLocalRef(idx int) *reflect.Object {
 	return f.localVars[idx].ref
 }
 
@@ -46,12 +46,12 @@ func (f *Frame) PopOpstackVal() int {
 	return f.opStack.slots[f.opStack.top].val
 }
 
-func (f *Frame) PushOpstackRef(ref *data.Object) {
+func (f *Frame) PushOpstackRef(ref *reflect.Object) {
 	f.opStack.slots[f.opStack.top].ref = ref
 	f.opStack.top = f.opStack.top + 1
 }
 
-func (f *Frame) PopOpstackRef() *data.Object {
+func (f *Frame) PopOpstackRef() *reflect.Object {
 	f.opStack.top = f.opStack.top - 1
 	return f.opStack.slots[f.opStack.top].ref
 }

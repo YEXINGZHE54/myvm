@@ -61,7 +61,7 @@ type (
 	Code struct {
 		MaxStacks u2
 		MaxLocals u2
-		codes []byte
+		Codes []byte
 		Exceptions []ExceptionHandle
 		Attributes []Attribute
 	}

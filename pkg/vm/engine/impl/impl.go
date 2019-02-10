@@ -1,11 +1,10 @@
 package impl
 
 import (
-	"strings"
 	"myvm/pkg/vm"
-	"myvm/pkg/vm/loader/classpath"
-	"myvm/pkg/vm/loader/classfile"
 	"myvm/pkg/vm/engine/thread"
+	"myvm/pkg/vm/engine/reflect"
+	"myvm/pkg/vm/loader/classloader"
 	// including instruments
 	_ "myvm/pkg/vm/engine/instructions/constants"
 	_ "myvm/pkg/vm/engine/instructions/objects"
@@ -13,13 +12,12 @@ import (
 
 type (
 	VMImpl struct {
-		cp *classpath.ClassPath
+		ld reflect.Loader
 	}
 )
 
 func NewVM(bootPath, classPath string) vm.VM {
-	cp := classpath.ParseOption(bootPath, classPath)
-	return &VMImpl{cp}
+	return &VMImpl{classloader.NewLoader(bootPath, classPath)}
 }
 
 func (vm *VMImpl) Startup(class string, args []string) (err error) {
@@ -27,17 +25,8 @@ func (vm *VMImpl) Startup(class string, args []string) (err error) {
 	return t.Run()
 }
 
-func (vm *VMImpl) LoadClass(class string) (cf *classfile.ClassFile, err error) {
-	clsname := strings.Replace(class, ".", "/", -1)
-	data, _, err := vm.cp.ReadClass(clsname)
-	if err != nil {
-		return
-	}
-	cf, err = classfile.Parse(data)
-	if err != nil {
-		return
-	}
-	return
+func (vm *VMImpl) LoadClass(class string) (cf *reflect.Class, err error) {
+	return vm.ld.LoadClass(class)
 }
 
 func init() {

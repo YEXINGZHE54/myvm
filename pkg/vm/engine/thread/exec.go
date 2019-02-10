@@ -8,13 +8,13 @@ import (
 )
 
 func (t *Thread) Run() (err error) {
-	cf, err := t.vm.LoadClass(t.class)
+	c, err := t.vm.LoadClass(t.class)
 	if err != nil {
 		return
 	}
-	pretty.Println(cf)
-	main := cf.GetMain()
-	err = t.interpret(main, nil)
+	pretty.Println(c)
+	//main := cf.GetMain()
+	//err = t.interpret(main, nil)
 	return
 }
 
