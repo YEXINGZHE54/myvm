@@ -2,9 +2,9 @@ package classloader
 
 import (
 	"strings"
-	"myvm/pkg/vm/loader/classfile"
-	"myvm/pkg/vm/loader/classpath"
-	"myvm/pkg/vm/engine/reflect"
+	"github.com/YEXINGZHE54/myvm/pkg/vm/loader/classfile"
+	"github.com/YEXINGZHE54/myvm/pkg/vm/loader/classpath"
+	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/reflect"
 )
 
 type (

@@ -1,13 +1,13 @@
 package impl
 
 import (
-	"myvm/pkg/vm"
-	"myvm/pkg/vm/engine/thread"
-	"myvm/pkg/vm/engine/reflect"
-	"myvm/pkg/vm/loader/classloader"
+	"github.com/YEXINGZHE54/myvm/pkg/vm"
+	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/thread"
+	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/reflect"
+	"github.com/YEXINGZHE54/myvm/pkg/vm/loader/classloader"
 	// including instruments
-	_ "myvm/pkg/vm/engine/instructions/constants"
-	_ "myvm/pkg/vm/engine/instructions/objects"
+	_ "github.com/YEXINGZHE54/myvm/pkg/vm/engine/instructions/constants"
+	_ "github.com/YEXINGZHE54/myvm/pkg/vm/engine/instructions/objects"
 )
 
 type (

@@ -1,7 +1,7 @@
 package stack
 
 import (
-	"myvm/pkg/vm/engine/reflect"
+	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/reflect"
 )
 
 type (

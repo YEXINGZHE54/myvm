@@ -4,8 +4,8 @@ import (
 	"flag"
 	"os"
 	"fmt"
-	"myvm/pkg/vm"
-	_ "myvm/pkg/vm/engine/impl"
+	"github.com/YEXINGZHE54/myvm/pkg/vm"
+	_ "github.com/YEXINGZHE54/myvm/pkg/vm/engine/impl"
 )
 
 type (

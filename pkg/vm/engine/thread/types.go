@@ -1,8 +1,8 @@
 package thread
 
 import (
-	"myvm/pkg/vm/memory/stack"
-	myvm "myvm/pkg/vm"
+	"github.com/YEXINGZHE54/myvm/pkg/vm/memory/stack"
+	myvm "github.com/YEXINGZHE54/myvm/pkg/vm"
 )
 
 type (

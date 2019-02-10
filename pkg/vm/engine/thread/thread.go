@@ -1,8 +1,8 @@
 package thread
 
 import (
-	myvm "myvm/pkg/vm"
-	"myvm/pkg/vm/memory/stack"
+	myvm "github.com/YEXINGZHE54/myvm/pkg/vm"
+	"github.com/YEXINGZHE54/myvm/pkg/vm/memory/stack"
 )
 
 func NewThread(max int, vm myvm.VM, class string) *Thread {

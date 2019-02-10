@@ -1,8 +1,8 @@
 package instructions
 
 import (
-	"myvm/pkg/vm/memory/stack"
-	"myvm/pkg/vm/loader/classfile"
+	"github.com/YEXINGZHE54/myvm/pkg/vm/memory/stack"
+	"github.com/YEXINGZHE54/myvm/pkg/vm/loader/classfile"
 )
 
 type (
