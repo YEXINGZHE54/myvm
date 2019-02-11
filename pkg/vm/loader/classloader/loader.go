@@ -72,8 +72,9 @@ func (l *loader) ResolveField(ref *reflect.FieldRef) (err error) {
 				return
 			}
 		}
+		return ErrorFieldNotFound
 	}
-	return ErrorFieldNotFound
+	return
 }
 
 func (l *loader) ResolveMethod(ref *reflect.MethodRef) (err error) {

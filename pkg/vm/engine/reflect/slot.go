@@ -16,6 +16,14 @@ func (s Slots) GetLong(idx uint) int64 {
 	return int64(s[idx].Val)
 }
 
+func (s Slots) SetFloat(idx uint, val float32) {
+	s[idx].Val = int32(val)
+}
+
+func (s Slots) GetFloat(idx uint) float32 {
+	return float32(s[idx].Val)
+}
+
 func (s Slots) SetDouble(idx uint, val float64) {
 	s[idx].Val = int32(val)
 }

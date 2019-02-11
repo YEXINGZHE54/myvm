@@ -47,6 +47,36 @@ func (f *Frame) PopOpstackVal() int32 {
 	return f.opStack.slots.GetVal(f.opStack.top)
 }
 
+func (f *Frame) PushOpstackLong(val int64) {
+	f.opStack.slots.SetLong(f.opStack.top, val)
+	f.opStack.top = f.opStack.top + 1
+}
+
+func (f *Frame) PopOpstackLong() int64 {
+	f.opStack.top = f.opStack.top - 1
+	return f.opStack.slots.GetLong(f.opStack.top)
+}
+
+func (f *Frame) PushOpstackFloat(val float32) {
+	f.opStack.slots.SetFloat(f.opStack.top, val)
+	f.opStack.top = f.opStack.top + 1
+}
+
+func (f *Frame) PopOpstackFloat() float32 {
+	f.opStack.top = f.opStack.top - 1
+	return f.opStack.slots.GetFloat(f.opStack.top)
+}
+
+func (f *Frame) PushOpstackDouble(val float64) {
+	f.opStack.slots.SetDouble(f.opStack.top, val)
+	f.opStack.top = f.opStack.top + 1
+}
+
+func (f *Frame) PopOpstackDouble() float64 {
+	f.opStack.top = f.opStack.top - 1
+	return f.opStack.slots.GetDouble(f.opStack.top)
+}
+
 func (f *Frame) PushOpstackRef(ref *reflect.Object) {
 	f.opStack.slots.SetRef(f.opStack.top, ref)
 	f.opStack.top = f.opStack.top + 1

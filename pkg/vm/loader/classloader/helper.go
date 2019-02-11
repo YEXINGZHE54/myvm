@@ -99,10 +99,18 @@ func convertInt32(i interface{}) (v int32) {
 	return
 }
 
-func convertFloat64(i interface{}) (v float64) {
+func convertFloat32(i interface{}) (v float32) {
 	switch val := i.(type) {
 	case classfile.FloatConst:
-		v = float64(val)
+		v = float32(val)
+	default:
+		v = i.(float32)
+	}
+	return
+}
+
+func convertFloat64(i interface{}) (v float64) {
+	switch val := i.(type) {
 	case classfile.DoubleConst:
 		v = float64(val)
 	default:

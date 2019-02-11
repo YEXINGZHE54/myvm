@@ -18,7 +18,7 @@ func init_statics(c *reflect.Class)  {
 			case "J":
 				c.StaticVars.SetLong(field.SlotId, convertInt64(c.Consts[field.ConstValIndex]))
 			case "F":
-				c.StaticVars.SetDouble(field.SlotId, convertFloat64(c.Consts[field.ConstValIndex]))
+				c.StaticVars.SetFloat(field.SlotId, convertFloat32(c.Consts[field.ConstValIndex]))
 			case "D":
 				c.StaticVars.SetDouble(field.SlotId, convertFloat64(c.Consts[field.ConstValIndex]))
 			case "Ljava/lang/String;":
