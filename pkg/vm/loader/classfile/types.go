@@ -26,8 +26,8 @@ type (
 		Attributes []Attribute
 	}
 	Attribute struct {
-		name string
-		data interface{}
+		Name string
+		Data interface{}
 	}
 	// constant types
 	NullConst struct{}

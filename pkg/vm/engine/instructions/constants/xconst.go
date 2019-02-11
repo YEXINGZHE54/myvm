@@ -1,9 +1,8 @@
 package constants
 
 import (
-	"github.com/YEXINGZHE54/myvm/pkg/vm/memory/stack"
-	"github.com/YEXINGZHE54/myvm/pkg/vm/loader/classfile"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/instructions"
+	"github.com/YEXINGZHE54/myvm/pkg/vm/memory/stack"
 )
 
 const (
@@ -32,7 +31,7 @@ func (i *ConstNullInst) Clone() instructions.Inst {
 	return i
 }
 
-func (i *ConstNullInst) Fetch(coder *classfile.CodeReader) {
+func (i *ConstNullInst) Fetch(coder *instructions.CodeReader) {
 
 }
 
@@ -44,7 +43,7 @@ func (i *DConst0Inst) Clone() instructions.Inst {
 	return i
 }
 
-func (i *DConst0Inst) Fetch(coder *classfile.CodeReader) {
+func (i *DConst0Inst) Fetch(coder *instructions.CodeReader) {
 
 }
 
@@ -57,7 +56,7 @@ func (i *DConst1Inst) Clone() instructions.Inst {
 	return i
 }
 
-func (i *DConst1Inst) Fetch(coder *classfile.CodeReader) {
+func (i *DConst1Inst) Fetch(coder *instructions.CodeReader) {
 
 }
 
@@ -70,7 +69,7 @@ func (i *FConst0Inst) Clone() instructions.Inst {
 	return i
 }
 
-func (i *FConst0Inst) Fetch(coder *classfile.CodeReader) {
+func (i *FConst0Inst) Fetch(coder *instructions.CodeReader) {
 
 }
 
@@ -82,7 +81,7 @@ func (i *FConst1Inst) Clone() instructions.Inst {
 	return i
 }
 
-func (i *FConst1Inst) Fetch(coder *classfile.CodeReader) {
+func (i *FConst1Inst) Fetch(coder *instructions.CodeReader) {
 
 }
 
@@ -94,7 +93,7 @@ func (i *FConst2Inst) Clone() instructions.Inst {
 	return i
 }
 
-func (i *FConst2Inst) Fetch(coder *classfile.CodeReader) {
+func (i *FConst2Inst) Fetch(coder *instructions.CodeReader) {
 
 }
 
@@ -106,7 +105,7 @@ func (i *IConstM1Inst) Clone() instructions.Inst {
 	return i
 }
 
-func (i *IConstM1Inst) Fetch(coder *classfile.CodeReader) {
+func (i *IConstM1Inst) Fetch(coder *instructions.CodeReader) {
 
 }
 
@@ -118,7 +117,7 @@ func (i *IConst0Inst) Clone() instructions.Inst {
 	return i
 }
 
-func (i *IConst0Inst) Fetch(coder *classfile.CodeReader) {
+func (i *IConst0Inst) Fetch(coder *instructions.CodeReader) {
 
 }
 
@@ -130,7 +129,7 @@ func (i *IConst1Inst) Clone() instructions.Inst {
 	return i
 }
 
-func (i *IConst1Inst) Fetch(coder *classfile.CodeReader) {
+func (i *IConst1Inst) Fetch(coder *instructions.CodeReader) {
 
 }
 
@@ -142,7 +141,7 @@ func (i *IConst2Inst) Clone() instructions.Inst {
 	return i
 }
 
-func (i *IConst2Inst) Fetch(coder *classfile.CodeReader) {
+func (i *IConst2Inst) Fetch(coder *instructions.CodeReader) {
 
 }
 
@@ -154,7 +153,7 @@ func (i *IConst3Inst) Clone() instructions.Inst {
 	return i
 }
 
-func (i *IConst3Inst) Fetch(coder *classfile.CodeReader) {
+func (i *IConst3Inst) Fetch(coder *instructions.CodeReader) {
 
 }
 
@@ -166,7 +165,7 @@ func (i *IConst4Inst) Clone() instructions.Inst {
 	return i
 }
 
-func (i *IConst4Inst) Fetch(coder *classfile.CodeReader) {
+func (i *IConst4Inst) Fetch(coder *instructions.CodeReader) {
 
 }
 
@@ -178,7 +177,7 @@ func (i *IConst5Inst) Clone() instructions.Inst {
 	return i
 }
 
-func (i *IConst5Inst) Fetch(coder *classfile.CodeReader) {
+func (i *IConst5Inst) Fetch(coder *instructions.CodeReader) {
 
 }
 
@@ -190,7 +189,7 @@ func (i *LConst0Inst) Clone() instructions.Inst {
 	return i
 }
 
-func (i *LConst0Inst) Fetch(coder *classfile.CodeReader) {
+func (i *LConst0Inst) Fetch(coder *instructions.CodeReader) {
 
 }
 
@@ -203,7 +202,7 @@ func (i *LConst1Inst) Clone() instructions.Inst {
 	return i
 }
 
-func (i *LConst1Inst) Fetch(coder *classfile.CodeReader) {
+func (i *LConst1Inst) Fetch(coder *instructions.CodeReader) {
 
 }
 

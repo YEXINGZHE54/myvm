@@ -1,4 +1,4 @@
-package classfile
+package instructions
 
 type (
 	CodeReader struct {

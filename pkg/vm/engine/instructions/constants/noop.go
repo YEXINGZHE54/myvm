@@ -1,9 +1,8 @@
 package constants
 
 import (
-	"github.com/YEXINGZHE54/myvm/pkg/vm/memory/stack"
-	"github.com/YEXINGZHE54/myvm/pkg/vm/loader/classfile"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/instructions"
+	"github.com/YEXINGZHE54/myvm/pkg/vm/memory/stack"
 )
 
 const (
@@ -18,7 +17,7 @@ func (i *NoopInst) Clone() instructions.Inst {
 	return i
 }
 
-func (i *NoopInst) Fetch(coder *classfile.CodeReader) {
+func (i *NoopInst) Fetch(coder *instructions.CodeReader) {
 
 }
 

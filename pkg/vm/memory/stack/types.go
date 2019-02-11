@@ -8,18 +8,17 @@ type (
 	Stack struct {
 		max int
 		frames []*Frame
+		thread interface{}
 	}
 	Frame struct {
-		localVars []Slot
+		stack *Stack
+		method *reflect.Method
+		localVars reflect.Slots
 		opStack *OPStack
 		pc int
 	}
 	OPStack struct {
-		top int
-		slots []Slot
-	}
-	Slot struct {
-		val int
-		ref *reflect.Object
+		top uint
+		slots reflect.Slots
 	}
 )

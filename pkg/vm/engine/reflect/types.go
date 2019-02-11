@@ -3,9 +3,13 @@ package reflect
 type (
 	Loader interface {
 		LoadClass(cls string) (c *Class, err error)
+		ResolveClass(clsref *ClsRef) (err error)
+		ResolveField(clsref *FieldRef) (err error)
+		ResolveMethod(clsref *MethodRef) (err error)
 	}
 	Object struct {
-		
+		Fields Slots
+		Class *Class
 	}
 	Class struct {
 		Flag uint16
@@ -18,9 +22,8 @@ type (
 		Loader Loader
 		Super *Class
 		Interfaces []*Class
-		instanceSlotCount uint
-		staticSlotCount uint
-		staticVars interface{}
+		InstanceSlotCount uint
+		StaticVars Slots
 	}
 	Member struct {
 		Flag uint16
@@ -30,6 +33,8 @@ type (
 	}
 	Field struct {
 		Member
+		SlotId uint
+		ConstValIndex uint
 	}
 	Method struct {
 		Member
@@ -53,6 +58,11 @@ type (
 	MethodRef struct {
 		MemberRef
 		Ref *Method
+	}
+	Slots []Slot
+	Slot struct {
+		Val int32
+		Ref *Object
 	}
 )
 

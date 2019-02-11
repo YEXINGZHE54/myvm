@@ -2,28 +2,37 @@ package thread
 
 import (
 	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/instructions"
+	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/reflect"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/memory/stack"
-	"github.com/YEXINGZHE54/myvm/pkg/vm/loader/classfile"
-	"github.com/kr/pretty"
 )
 
 func (t *Thread) Run() (err error) {
+	// prepare class method
 	c, err := t.vm.LoadClass(t.class)
 	if err != nil {
 		return
 	}
-	pretty.Println(c)
-	//main := cf.GetMain()
-	//err = t.interpret(main, nil)
+	main, err := c.GetMain()
+	if err != nil {
+		return
+	}
+	// run main method
+	t.prepareFrame(main, nil)
+	err = t.loop()
 	return
 }
 
-func (t *Thread) interpret(method *classfile.Member, args []interface{}) error {
-	code := method.GetCode()
-	coder := code.GetReader()
-	f := stack.NewFrame(int(code.MaxStacks), int(code.MaxLocals))
-	// running bytecode
-	for !f.Exited() {
+func (t *Thread) prepareFrame(method *reflect.Method, args []interface{}) {
+	f := stack.NewFrame(method)
+	t.stack.Push(f)
+	return
+}
+
+func (t *Thread) loop() (err error) {
+	for t.stack.Current() != nil {
+		f := t.stack.Current()
+		method := f.GetMethod()
+		coder := instructions.NewCodeReader(method.Codes)
 		pc := f.GetPC()
 		t.PC(pc)
 		coder.ResetPC(pc)
@@ -35,5 +44,5 @@ func (t *Thread) interpret(method *classfile.Member, args []interface{}) error {
 		f.SetPC(coder.GetPC())
 		inst.Exec(f)
 	}
-	return nil
+	return
 }

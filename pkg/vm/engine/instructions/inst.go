@@ -2,13 +2,12 @@ package instructions
 
 import (
 	"github.com/YEXINGZHE54/myvm/pkg/vm/memory/stack"
-	"github.com/YEXINGZHE54/myvm/pkg/vm/loader/classfile"
 )
 
 type (
 	Inst interface {
 		Clone() Inst
-		Fetch(coder *classfile.CodeReader)
+		Fetch(coder *CodeReader)
 		Exec(f *stack.Frame)
 	}
 )

@@ -1,9 +1,8 @@
 package objects
 
 import (
-	"github.com/YEXINGZHE54/myvm/pkg/vm/memory/stack"
-	"github.com/YEXINGZHE54/myvm/pkg/vm/loader/classfile"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/instructions"
+	"github.com/YEXINGZHE54/myvm/pkg/vm/memory/stack"
 )
 
 const (
@@ -20,7 +19,7 @@ func (i *GetStaticInst) Clone() instructions.Inst {
 	return &GetStaticInst{}
 }
 
-func (i *GetStaticInst) Fetch(coder *classfile.CodeReader) {
+func (i *GetStaticInst) Fetch(coder *instructions.CodeReader) {
 	i.idx = coder.Read2()
 }
 

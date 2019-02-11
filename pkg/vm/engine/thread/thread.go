@@ -6,11 +6,12 @@ import (
 )
 
 func NewThread(max int, vm myvm.VM, class string) *Thread {
-	return &Thread{
+	t := &Thread{
 		vm: vm,
 		class: class,
-		stack: stack.NewStack(max),
 	}
+	t.stack = stack.NewStack(max, t)
+	return t
 }
 
 func (t *Thread) GetPC() int {

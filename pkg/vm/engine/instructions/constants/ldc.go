@@ -1,9 +1,8 @@
 package constants
 
 import (
-	"github.com/YEXINGZHE54/myvm/pkg/vm/memory/stack"
-	"github.com/YEXINGZHE54/myvm/pkg/vm/loader/classfile"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/instructions"
+	"github.com/YEXINGZHE54/myvm/pkg/vm/memory/stack"
 )
 
 const (
@@ -28,7 +27,7 @@ func (i *LdcInst) Clone() instructions.Inst {
 	return &LdcInst{}
 }
 
-func (i *LdcInst) Fetch(coder *classfile.CodeReader) {
+func (i *LdcInst) Fetch(coder *instructions.CodeReader) {
 	i.idx = coder.Read1()
 }
 
@@ -42,7 +41,7 @@ func (i *LdcwInst) Clone() instructions.Inst {
 	return &LdcwInst{}
 }
 
-func (i *LdcwInst) Fetch(coder *classfile.CodeReader) {
+func (i *LdcwInst) Fetch(coder *instructions.CodeReader) {
 	i.idx = coder.Read2()
 }
 
@@ -55,7 +54,7 @@ func (i *Ldc2wInst) Clone() instructions.Inst {
 	return &Ldc2wInst{}
 }
 
-func (i *Ldc2wInst) Fetch(coder *classfile.CodeReader) {
+func (i *Ldc2wInst) Fetch(coder *instructions.CodeReader) {
 	i.idx = coder.Read2()
 }
 
