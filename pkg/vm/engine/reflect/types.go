@@ -6,6 +6,7 @@ type (
 		ResolveClass(clsref *ClsRef) (err error)
 		ResolveField(clsref *FieldRef) (err error)
 		ResolveMethod(clsref *MethodRef) (err error)
+		ResolveIfaceMethod(clsref *MethodRef) (err error)
 	}
 	Object struct {
 		Fields Slots
@@ -24,6 +25,7 @@ type (
 		Interfaces []*Class
 		InstanceSlotCount uint
 		StaticVars Slots
+		Started bool
 	}
 	Member struct {
 		Flag uint16
@@ -41,6 +43,7 @@ type (
 		MaxStack int
 		MaxLocal int
 		Codes []byte
+		ArgSlot uint //TODO
 	}
 	ClsRef struct {
 		Name string

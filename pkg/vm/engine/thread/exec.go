@@ -4,6 +4,7 @@ import (
 	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/instructions"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/reflect"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/memory/stack"
+	"runtime"
 )
 
 func (t *Thread) Run() (err error) {
@@ -18,7 +19,24 @@ func (t *Thread) Run() (err error) {
 	}
 	// run main method
 	t.prepareFrame(main, nil)
+	// run clinit firstly
+	t.InitClass(c)
 	err = t.loop()
+	return
+}
+
+func (t *Thread) InitClass(cls *reflect.Class) (err error) {
+	cls.Started = true
+	// push clinit method
+	clinit, err := cls.GetClinit()
+	if err != nil {
+		return
+	}
+	t.prepareFrame(clinit, nil)
+	// init super class if not started
+	if cls.Super != nil && !cls.Started {
+		t.InitClass(cls.Super)
+	}
 	return
 }
 
@@ -29,6 +47,14 @@ func (t *Thread) prepareFrame(method *reflect.Method, args []interface{}) {
 }
 
 func (t *Thread) loop() (err error) {
+	defer func() {
+		if r := recover(); r != nil {
+			t.Dump()
+		}
+		var buf [4096]byte
+		n := runtime.Stack(buf[:], false)
+		println(string(buf[:n]))
+	}()
 	for t.stack.Current() != nil {
 		f := t.stack.Current()
 		method := f.GetMethod()

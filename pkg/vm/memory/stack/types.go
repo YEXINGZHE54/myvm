@@ -11,7 +11,7 @@ type (
 		thread interface{}
 	}
 	Frame struct {
-		stack *Stack
+		Stack *Stack
 		method *reflect.Method
 		localVars reflect.Slots
 		opStack *OPStack

@@ -12,15 +12,6 @@ func (f *Frame) GetPC() int {
 	return f.pc
 }
 
-func (f *Frame) Exited() bool {
-	return f.pc < 0
-}
-
-func (f *Frame) Exit() {
-	f.pc = -1
-	f.stack.Pop()
-}
-
 func (f *Frame) SetLocalVal(idx uint, val int32) {
 	f.localVars.SetVal(idx, val)
 }
@@ -35,6 +26,10 @@ func (f *Frame) SetLocalRef(idx uint, ref *reflect.Object) {
 
 func (f *Frame) GetLocalRef(idx uint) *reflect.Object {
 	return f.localVars.GetRef(idx)
+}
+
+func (f *Frame) SetLocalSlot(idx uint, s reflect.Slot) {
+	f.localVars[idx] = s
 }
 
 func (f *Frame) PushOpstackVal(val int32) {
@@ -91,4 +86,9 @@ func (f *Frame) DupStack() {
 	idx := f.opStack.top
 	f.opStack.slots[idx] = f.opStack.slots[idx-1]
 	f.opStack.top = idx + 1
+}
+
+func (f *Frame) PopOpstackSlot() reflect.Slot {
+	f.opStack.top = f.opStack.top - 1
+	return f.opStack.slots[f.opStack.top]
 }

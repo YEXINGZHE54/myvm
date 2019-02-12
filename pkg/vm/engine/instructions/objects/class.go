@@ -30,12 +30,20 @@ func (i *GetStaticInst) Fetch(coder *instructions.CodeReader) {
 
 func (i *GetStaticInst) Exec(f *stack.Frame) {
 	println("getstatic exec: ")
-	f.PopOpstackRef() //TODO: somewhere error
 	cls := f.GetMethod().Cls
 	ref := cls.Consts[i.idx].(*reflect.FieldRef)
 	err := cls.Loader.ResolveField(ref)
 	if err != nil {
 		panic(err)
+	}
+	// check class init
+	inited, err := init_class(f, ref.Ref.Cls)
+	if err != nil {
+		panic(err)
+	}
+	if !inited {
+		revertPC(f)
+		return
 	}
 	switch ref.Ref.Desc[0] {
 	case 'Z','B','C','S','I':
@@ -66,6 +74,15 @@ func (i *PutStaticInst) Exec(f *stack.Frame) {
 	err := cls.Loader.ResolveField(ref)
 	if err != nil {
 		panic(err)
+	}
+	// check class init
+	inited, err := init_class(f, ref.Ref.Cls)
+	if err != nil {
+		panic(err)
+	}
+	if !inited {
+		revertPC(f)
+		return
 	}
 	switch ref.Ref.Desc[0] {
 	case 'Z','B','C','S','I':

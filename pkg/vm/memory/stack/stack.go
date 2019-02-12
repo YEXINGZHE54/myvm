@@ -24,15 +24,18 @@ func (s *Stack) Push(f *Frame) {
 	if len(s.frames) >= s.max {
 		panic("Stack Overflow")
 	}
-	f.stack = s // refer to stack
+	f.Stack = s // refer to stack
 	s.frames = append(s.frames, f)
 }
 
-func (s *Stack) Pop() {
+func (s *Stack) Pop() *Frame {
 	if len(s.frames) == 0 {
 		panic("Stack empty")
 	}
-	s.frames = s.frames[:len(s.frames)-1]
+	idx := len(s.frames)-1
+	f := s.frames[idx]
+	s.frames = s.frames[:idx]
+	return f
 }
 
 func (s *Stack) Current() (f *Frame) {

@@ -60,8 +60,8 @@ func (l *loader) ResolveClass(clsref *reflect.ClsRef) (err error) {
 }
 
 func (l *loader) ResolveField(ref *reflect.FieldRef) (err error) {
-	var cls *reflect.Class
 	if ref.Ref == nil {
+		var cls *reflect.Class
 		cls, err = l.LoadClass(ref.ClsName)
 		if err != nil {
 			return err
@@ -78,17 +78,38 @@ func (l *loader) ResolveField(ref *reflect.FieldRef) (err error) {
 }
 
 func (l *loader) ResolveMethod(ref *reflect.MethodRef) (err error) {
-	var cls *reflect.Class
 	if ref.Ref == nil {
+		var cls *reflect.Class
 		cls, err = l.LoadClass(ref.ClsName)
 		if err != nil {
 			return err
 		}
-		for _, field := range cls.Methods {
-			if field.Name == ref.Name && field.Desc == ref.Desc {
-				ref.Ref = field
-				return
-			}
+		ref.Ref, err = cls.LookupMethod(ref.Name, ref.Desc)
+		if err != nil {
+			return
+		}
+		err = ref.Ref.ParseSignature()
+		if err != nil {
+			return
+		}
+	}
+	return ErrorMethodNotFound
+}
+
+func (l *loader) ResolveIfaceMethod(ref *reflect.MethodRef) (err error) {
+	if ref.Ref == nil {
+		var cls *reflect.Class
+		cls, err = l.LoadClass(ref.ClsName)
+		if err != nil {
+			return err
+		}
+		ref.Ref, err = cls.LookupIfaceMethod(ref.Name, ref.Desc)
+		if err != nil {
+			return
+		}
+		err = ref.Ref.ParseSignature()
+		if err != nil {
+			return
 		}
 	}
 	return ErrorMethodNotFound
