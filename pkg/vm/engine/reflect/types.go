@@ -43,7 +43,7 @@ type (
 		MaxStack int
 		MaxLocal int
 		Codes []byte
-		ArgSlot uint //TODO
+		ArgSlot uint
 	}
 	ClsRef struct {
 		Name string
@@ -66,6 +66,10 @@ type (
 	Slot struct {
 		Val int32
 		Ref *Object
+	}
+	MethodDescriptor struct {
+		Args []string
+		Return string
 	}
 )
 

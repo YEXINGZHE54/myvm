@@ -40,6 +40,15 @@ func (i *NewInst) Exec(f *stack.Frame) {
 	if err != nil {
 		panic(err)
 	}
+	// check class init
+	inited, err := init_class(f, cls)
+	if err != nil {
+		panic(err)
+	}
+	if !inited {
+		revertPC(f)
+		return
+	}
 	o, err := ref.Ref.NewObject()
 	if err != nil {
 		panic(err)
