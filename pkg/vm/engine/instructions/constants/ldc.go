@@ -2,6 +2,8 @@ package constants
 
 import (
 	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/instructions"
+	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/reflect"
+	"github.com/YEXINGZHE54/myvm/pkg/vm/loader/classfile"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/memory/stack"
 )
 
@@ -31,10 +33,31 @@ func (i *LdcInst) Fetch(coder *instructions.CodeReader) {
 	i.idx = coder.Read1()
 }
 
+//TODO: string object
 func (i *LdcInst) Exec(f *stack.Frame) {
 	println("ldc exec")
-	println(i.idx)
-	//f.PushOpstackRef(nil)
+	cls := f.GetMethod().Cls
+	switch val := cls.Consts[i.idx].(type) {
+	case classfile.IntegerConst:
+		f.PushOpstackVal(int32(val))
+	case classfile.FloatConst:
+		f.PushOpstackFloat(float32(val))
+	case string:
+		f.PushOpstackRef(new(reflect.Object))
+	case reflect.ClsRef:
+		var err error
+		c := val.Ref
+		if c == nil {
+			val.Ref, err = cls.Loader.LoadClass(val.Name)
+			if err != nil {
+				panic(err)
+			}
+			c = val.Ref
+		}
+		f.PushOpstackRef(nil)
+	default:
+		panic("unsupported ldc")
+	}
 }
 
 func (i *LdcwInst) Clone() instructions.Inst {

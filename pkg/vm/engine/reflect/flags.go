@@ -39,3 +39,7 @@ func (m *Method) IsAbstract() bool {
 func (m *Method) IsProtected() bool {
 	return m.Flag & ACCESS_PROTECTED > 0
 }
+
+func (m *Method) IsNative() bool {
+	return m.Flag & ACCESS_NATIVE > 0
+}

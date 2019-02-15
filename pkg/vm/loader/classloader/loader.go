@@ -93,7 +93,7 @@ func (l *loader) ResolveMethod(ref *reflect.MethodRef) (err error) {
 			return
 		}
 	}
-	return ErrorMethodNotFound
+	return
 }
 
 func (l *loader) ResolveIfaceMethod(ref *reflect.MethodRef) (err error) {
@@ -112,7 +112,7 @@ func (l *loader) ResolveIfaceMethod(ref *reflect.MethodRef) (err error) {
 			return
 		}
 	}
-	return ErrorMethodNotFound
+	return
 }
 
 func (l *loader) LoadClass(cls string) (c *reflect.Class, err error) {

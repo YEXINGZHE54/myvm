@@ -51,8 +51,8 @@ func (t *Thread) loop() (err error) {
 		if r := recover(); r != nil {
 			t.Dump()
 		}
-		var buf [4096]byte
-		n := runtime.Stack(buf[:], false)
+		var buf [40960]byte
+		n := runtime.Stack(buf[:], true)
 		println(string(buf[:n]))
 	}()
 	for t.stack.Current() != nil {

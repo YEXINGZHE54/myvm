@@ -23,7 +23,7 @@ type (
 		Loader Loader
 		Super *Class
 		Interfaces []*Class
-		InstanceSlotCount uint
+		InstanceSlotCount int
 		StaticVars Slots
 		Started bool
 	}
@@ -35,15 +35,15 @@ type (
 	}
 	Field struct {
 		Member
-		SlotId uint
-		ConstValIndex uint
+		SlotId int
+		ConstValIndex int
 	}
 	Method struct {
 		Member
 		MaxStack int
 		MaxLocal int
 		Codes []byte
-		ArgSlot uint
+		ArgSlot int
 	}
 	ClsRef struct {
 		Name string

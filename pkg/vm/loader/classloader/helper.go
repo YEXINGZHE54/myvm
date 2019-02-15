@@ -55,7 +55,7 @@ func NewFields(cls *reflect.Class, cf *classfile.ClassFile) (result []*reflect.F
 		// find constval index for static final field
 		for _, attr := range fi.Attributes {
 			if attr.Name == "ConstantValue" {
-				field.ConstValIndex = uint(classfile.ToIdx(attr.Data))
+				field.ConstValIndex = int(classfile.ToIdx(attr.Data))
 			}
 		}
 		result = append(result, field)

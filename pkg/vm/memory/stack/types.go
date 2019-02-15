@@ -18,7 +18,7 @@ type (
 		pc int
 	}
 	OPStack struct {
-		top uint
+		top int
 		slots reflect.Slots
 	}
 )

@@ -25,7 +25,7 @@ func (i *Astore1Inst) Exec(f *stack.Frame) {
 	astore(f, 1)
 }
 
-func astore(f *stack.Frame, idx uint)  {
+func astore(f *stack.Frame, idx int)  {
 	ref := f.PopOpstackRef()
 	f.SetLocalRef(idx, ref)
 }

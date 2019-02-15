@@ -38,8 +38,22 @@ func (i *InvokeVirtualInst) Fetch(coder *instructions.CodeReader) {
 
 func (i *InvokeVirtualInst) Exec(f *stack.Frame) {
 	println("invoke virtual exec")
-	println(i.idx)
-	//f.PushOpstackRef(nil)
+	cls := f.GetMethod().Cls
+	ref := cls.Consts[i.idx].(*reflect.MethodRef)
+	err := cls.Loader.ResolveMethod(ref)
+	if err != nil {
+		panic(err)
+	}
+	if ref.Name == "<init>" || ref.Name == "<clinit>" {
+		//TODO: it panics?
+//		panic("virtual method could not be instance initialization method, nor class or interface initialization method")
+	}
+	obj := f.GetOpstackSlot(ref.Ref.ArgSlot-1).Ref
+	invokem, err := obj.Class.LookupVirtualMethod(ref.Ref)
+	if err != nil {
+		panic(err)
+	}
+	invokeMethod(f, invokem)
 }
 
 func (i *InvokeSpecialInst) Clone() instructions.Inst {
@@ -91,7 +105,7 @@ func (i *InvokeSpecialInst) Exec(f *stack.Frame) {
 		c = m.Cls
 	}
 	// 2.2
-	invoked, err := c.LookupSpecialMethod(ref.Ref)
+	invoked, err := c.LookupSpecialMethod(m)
 	if err != nil {
 		panic(err)
 	}
@@ -113,9 +127,6 @@ func (i *InvokeStaticInst) Exec(f *stack.Frame) {
 	ref := cls.Consts[i.idx].(*reflect.MethodRef)
 	err := cls.Loader.ResolveMethod(ref)
 	if err != nil {
-		if ref.Name == "registerNatives" { //TODO: skip native
-			return
-		}
 		panic(err)
 	}
 	if !ref.Ref.IsStatic() {
@@ -143,10 +154,24 @@ func (i *InvokeInterfaceInst) Fetch(coder *instructions.CodeReader) {
 	coder.Read2()
 }
 
+// neally same to invoke virtual
 func (i *InvokeInterfaceInst) Exec(f *stack.Frame) {
 	println("invoke interface exec")
-	println(i.idx)
-	//f.PushOpstackRef(nil)
+	cls := f.GetMethod().Cls
+	ref := cls.Consts[i.idx].(*reflect.MethodRef)
+	err := cls.Loader.ResolveIfaceMethod(ref)
+	if err != nil {
+		panic(err)
+	}
+	if ref.Name == "<init>" || ref.Name == "<clinit>" {
+		panic("interface method could not be instance initialization method, nor class or interface initialization method")
+	}
+	obj := f.GetOpstackSlot(ref.Ref.ArgSlot-1).Ref
+	invokem, err := obj.Class.LookupVirtualMethod(ref.Ref)
+	if err != nil {
+		panic(err)
+	}
+	invokeMethod(f, invokem)
 }
 
 func init() {

@@ -125,22 +125,22 @@ only instance method is searched
 func (c *Class) LookupSpecialMethod(m *Method) (newm *Method, err error) {
 	name, desc := m.Name, m.Desc
 	// 1
-	m, err = lookupCurrent(c, name, desc)
-	if err == nil && !m.IsStatic() {
+	newm, err = lookupCurrent(c, name, desc)
+	if err == nil && !newm.IsStatic() {
 		return
 	}
 	// 2
 	if c.IsClass() {
-		m, err = lookupSuperClassMethod(c, name, desc)
-		if err == nil && !m.IsStatic() {
+		newm, err = lookupSuperClassMethod(c, name, desc)
+		if err == nil && !newm.IsStatic() {
 			return
 		}
 	}
 	// 3, skip
 	// 4
 	if c.IsInterface() {
-		m, err = lookupMaxSpecificMethod(c, name, desc)
-		if err == nil && !m.IsStatic() {
+		newm, err = lookupMaxSpecificMethod(c, name, desc)
+		if err == nil && !newm.IsStatic() {
 			return
 		}
 	}
@@ -148,6 +148,27 @@ func (c *Class) LookupSpecialMethod(m *Method) (newm *Method, err error) {
 	return
 }
 
+// 1. lookup in c and its superclass and soforth
+// 2. [MaxSpecific SuperInterface] and non-abstract method
+func (c *Class) LookupVirtualMethod(m *Method) (newm *Method, err error) {
+	name, desc := m.Name, m.Desc
+	newm, err = lookupCurrent(c, name, desc)
+	if err == nil && !newm.IsStatic() {
+		return
+	}
+	newm, err = lookupSuperClassMethod(c, name, desc)
+	if err == nil && !newm.IsStatic() {
+		return
+	}
+	for _, iface := range c.Interfaces {
+		newm, err = lookupMaxSpecificMethod(iface, name, desc)
+		if err == nil {
+			return
+		}
+	}
+	err =ErrorMethodNotFound
+	return
+}
 
 // look up method in class and super classes
 func lookupSuperClassMethod(c *Class, name, desc string) (m *Method, err error) {
