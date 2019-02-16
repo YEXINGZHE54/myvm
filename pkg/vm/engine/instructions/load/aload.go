@@ -6,29 +6,81 @@ import (
 )
 
 const (
+	aload0_op = 0x2a
 	aload1_op = 0x2b
+	aload2_op = 0x2c
+	aload3_op = 0x2d
 )
 
 type (
-	Aload1Inst struct{}
+	ALoad0 struct{
+	}
+	ALoad1 struct {
+	}
+	ALoad2 struct {
+	}
+	ALoad3 struct {
+	}
 )
 
-func (i *Aload1Inst) Clone() instructions.Inst {
+func (i *ALoad0) Clone() instructions.Inst {
 	return i
 }
 
-func (i *Aload1Inst) Fetch(coder *instructions.CodeReader) {
+func (i *ALoad0) Fetch(coder *instructions.CodeReader) {
 
 }
 
-func (i *Aload1Inst) Exec(f *stack.Frame) {
-	astore(f, 1)
+func (i *ALoad0) Exec(f *stack.Frame) {
+	aload(f, 0)
 }
 
-func astore(f *stack.Frame, idx int)  {
+
+func (i *ALoad1) Clone() instructions.Inst {
+	return i
+}
+
+func (i *ALoad1) Fetch(coder *instructions.CodeReader) {
+
+}
+
+func (i *ALoad1) Exec(f *stack.Frame) {
+	aload(f, 1)
+}
+
+
+func (i *ALoad2) Clone() instructions.Inst {
+	return i
+}
+
+func (i *ALoad2) Fetch(coder *instructions.CodeReader) {
+
+}
+
+func (i *ALoad2) Exec(f *stack.Frame) {
+	aload(f, 2)
+}
+
+
+func (i *ALoad3) Clone() instructions.Inst {
+	return i
+}
+
+func (i *ALoad3) Fetch(coder *instructions.CodeReader) {
+
+}
+
+func (i *ALoad3) Exec(f *stack.Frame) {
+	aload(f, 3)
+}
+
+func aload(f *stack.Frame, idx int)  {
 	f.PushOpstackRef(f.GetLocalRef(idx))
 }
 
 func init() {
-	instructions.Register(aload1_op, &Aload1Inst{})
+	instructions.Register(aload0_op, &ALoad0{})
+	instructions.Register(aload1_op, &ALoad1{})
+	instructions.Register(aload2_op, &ALoad2{})
+	instructions.Register(aload3_op, &ALoad3{})
 }

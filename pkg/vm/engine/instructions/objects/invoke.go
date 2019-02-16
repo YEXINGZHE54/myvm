@@ -1,6 +1,7 @@
 package objects
 
 import (
+	"github.com/YEXINGZHE54/myvm/pkg/utils"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/instructions"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/reflect"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/memory/stack"
@@ -45,7 +46,6 @@ func (i *InvokeVirtualInst) Exec(f *stack.Frame) {
 		panic(err)
 	}
 	if ref.Name == "<init>" || ref.Name == "<clinit>" {
-		//TODO: it panics?
 		panic("virtual method could not be instance initialization method, nor class or interface initialization method")
 	}
 	obj := f.GetOpstackSlot(ref.Ref.ArgSlot-1).Ref
@@ -53,7 +53,24 @@ func (i *InvokeVirtualInst) Exec(f *stack.Frame) {
 	if ref.Name == "println" && ref.Desc[len(ref.Desc)-1] == 'V' { //void function, just print them
 		for idx := 0; idx < ref.Ref.ArgSlot-1; idx = idx + 1 {
 			slot := f.PopOpstackSlot()
-			println(slot.Val, slot.Ref)
+			if slot.Ref == nil {
+				println(slot.Val)
+			} else {
+				switch slot.Ref.Class.Name {
+				case "java/lang/String":
+					field, err := slot.Ref.Class.GetInstanceField("value", "[C")
+					if err != nil {
+						panic(err)
+					}
+					chars := slot.Ref.GetField(field).(*reflect.Object).Chars()
+					if err != nil {
+						panic(err)
+					}
+					println(utils.UTF16ToString(chars))
+				default:
+					println(slot.Ref.Class.Name, slot.Ref)
+				}
+			}
 		}
 		// pop System.out
 		f.PopOpstackSlot()

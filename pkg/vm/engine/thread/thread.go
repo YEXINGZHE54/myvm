@@ -6,10 +6,11 @@ import (
 	"github.com/YEXINGZHE54/myvm/pkg/vm/memory/stack"
 )
 
-func NewThread(max int, vm myvm.VM, class string) *Thread {
+func NewThread(max int, vm myvm.VM, class string, args []string) *Thread {
 	t := &Thread{
 		vm: vm,
 		class: class,
+		args: args,
 	}
 	t.stack = stack.NewStack(max, t)
 	return t

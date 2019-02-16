@@ -11,5 +11,6 @@ type (
 		vm myvm.VM
 		stack *stack.Stack
 		class string
+		args []string
 	}
 )

@@ -18,8 +18,29 @@ func (t *Thread) Run() (err error) {
 	if err != nil {
 		return
 	}
+	// prepare args
+	strclass, err := t.vm.LoadClass("java/lang/String")
+	if err != nil {
+		return
+	}
+	strarrcls, err := strclass.ArrayClass()
+	if err != nil {
+		return
+	}
+	args, err := strarrcls.NewArray(len(t.args))
+	if err != nil {
+		return
+	}
+	refs := args.Refs()
+	for idx, arg := range t.args {
+		refs[idx], err = c.Loader.JString(arg)
+		if err != nil {
+			return
+		}
+	}
 	// run main method
-	t.prepareFrame(main, nil)
+	f := t.prepareFrame(main)
+	f.SetLocalRef(0, args)
 	// run clinit firstly
 	t.InitClass(c)
 	err = t.loop()
@@ -33,7 +54,7 @@ func (t *Thread) InitClass(cls *reflect.Class) (err error) {
 	if err != nil {
 		return
 	}
-	t.prepareFrame(clinit, nil)
+	t.prepareFrame(clinit)
 	// init super class if not started
 	if cls.Super != nil && !cls.Started {
 		t.InitClass(cls.Super)
@@ -41,8 +62,8 @@ func (t *Thread) InitClass(cls *reflect.Class) (err error) {
 	return
 }
 
-func (t *Thread) prepareFrame(method *reflect.Method, args []interface{}) {
-	f := stack.NewFrame(method)
+func (t *Thread) prepareFrame(method *reflect.Method) (f *stack.Frame) {
+	f = stack.NewFrame(method)
 	t.stack.Push(f)
 	return
 }

@@ -1,7 +1,12 @@
 package reflect
 
 import (
+	"errors"
 	"strings"
+)
+
+var (
+	ErrorFieldNotFound = errors.New("field not found")
 )
 
 func (c *Class) GetMain() (m *Method, err error) {
@@ -38,7 +43,6 @@ func (c *Class) ArrayClass() (cls *Class, err error) {
 // return component class if current class is array class
 func (c *Class) ComponentClass() (cls *Class, err error) {
 	name := c.Name
-	println("parsing component of class " + c.Name)
 	if name[0] != '[' {
 		err = ErrorInvalidArrayClassName
 		return
@@ -50,7 +54,7 @@ func (c *Class) ComponentClass() (cls *Class, err error) {
 	case 'B':
 		cname = "java/lang/Byte"
 	case 'C':
-		cname = "java/lang/Char"
+		cname = "java/lang/Character"
 	case 'S':
 		cname = "java/lang/Short"
 	case 'I':
@@ -70,5 +74,15 @@ func (c *Class) ComponentClass() (cls *Class, err error) {
 		return
 	}
 	cls, err = c.Loader.LoadClass(cname)
+	return
+}
+
+func (c *Class) GetInstanceField(name, desc string) (f *Field, err error) {
+	for _, f = range c.Fields {
+		if f.Name == name && f.Desc == desc && !f.IsStatic() {
+			return
+		}
+	}
+	err = ErrorFieldNotFound
 	return
 }

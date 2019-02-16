@@ -4,7 +4,7 @@ import (
 	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/reflect"
 )
 
-func init_statics(c *reflect.Class)  {
+func init_statics(c *reflect.Class) error {
 	// default static field already set to zero/false
 	// we only need to set final const value
 	for _, field := range c.Fields {
@@ -22,9 +22,13 @@ func init_statics(c *reflect.Class)  {
 			case "D":
 				c.StaticVars.SetDouble(field.SlotId, convertFloat64(c.Consts[field.ConstValIndex]))
 			case "Ljava/lang/String;":
-				println(c.Consts[field.ConstValIndex])
-				c.StaticVars.SetRef(field.SlotId, nil)
+				o, err := c.Loader.JString(c.Consts[field.ConstValIndex].(string))
+				if err != nil {
+					return err
+				}
+				c.StaticVars.SetRef(field.SlotId, o)
 			}
 		}
 	}
+	return nil
 }

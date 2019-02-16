@@ -102,6 +102,15 @@ func (f *ClassFile) parseConstant(r *Reader) (consts []Constant, err error) {
 			consts[i] = &MethodConst{r.read2(), r.read2()}
 		case CONSTANT_InterfaceMethod:
 			consts[i] = &IfaceMethodConst{r.read2(), r.read2()}
+		case CONSTANT_MethodHandle:
+			r.read1()
+			r.read2()
+		case CONSTANT_MethodType:
+			r.read2()
+		case CONSTANT_InvokeDynamic:
+			r.read2()
+			r.read2()
+			//TODO: skip
 		default:
 			println("const type: ")
 			println(r.index)

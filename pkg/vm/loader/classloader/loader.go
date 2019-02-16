@@ -2,6 +2,7 @@ package classloader
 
 import (
 	"errors"
+	"github.com/YEXINGZHE54/myvm/pkg/utils"
 	"strings"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/loader/classfile"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/loader/classpath"
@@ -12,16 +13,19 @@ type (
 	loader struct {
 		classes map[string]*reflect.Class
 		cp *classpath.ClassPath
+		stringpool map[string]*reflect.Object
 	}
 )
 
 var (
 	ErrorFieldNotFound = errors.New("field not found")
-	ErrorMethodNotFound = errors.New("method not found")
 )
 
 func NewLoader(bootPath, classPath string) (l reflect.Loader) {
-	l = &loader{make(map[string]*reflect.Class),classpath.ParseOption(bootPath, classPath)}
+	l = &loader{make(map[string]*reflect.Class),
+		classpath.ParseOption(bootPath, classPath),
+		make(map[string]*reflect.Object),
+	}
 	return
 }
 
@@ -134,6 +138,36 @@ func (l *loader) LoadClass(cls string) (c *reflect.Class, err error) {
 	return
 }
 
+func (l *loader) JString(val string) (o *reflect.Object, err error) {
+	o, ok := l.stringpool[val]
+	if ok {
+		return
+	}
+	carrcls, err := l.LoadClass("[C")
+	if err != nil {
+		return
+	}
+	charval, err := carrcls.ArrayFrom(utils.StringToUTF16(val))
+	if err != nil {
+		return
+	}
+	cls, err := l.LoadClass("java/lang/String")
+	if err != nil {
+		return
+	}
+	o, err = cls.NewObject()
+	if err != nil {
+		return
+	}
+	valfield, err := cls.GetInstanceField("value", "[C")
+	if err != nil {
+		return
+	}
+	o.SetField(valfield, charval)
+	l.stringpool[val] = o
+	return
+}
+
 func (l *loader) loadObjectClass(cls string) (c *reflect.Class, err error) {
 	// read classfile
 	cf, err := l.readClass(cls)
@@ -159,7 +193,10 @@ func (l *loader) loadObjectClass(cls string) (c *reflect.Class, err error) {
 	// prepare
 	prepare(c)
 	// initialzie
-	init_statics(c)
+	err = init_statics(c)
+	if err != nil {
+		panic(err)
+	}
 	return
 }
 

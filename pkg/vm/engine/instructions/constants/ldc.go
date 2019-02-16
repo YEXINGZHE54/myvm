@@ -33,7 +33,6 @@ func (i *LdcInst) Fetch(coder *instructions.CodeReader) {
 	i.idx = coder.Read1()
 }
 
-//TODO: string object
 func (i *LdcInst) Exec(f *stack.Frame) {
 	println("ldc exec")
 	cls := f.GetMethod().Cls
@@ -43,11 +42,7 @@ func (i *LdcInst) Exec(f *stack.Frame) {
 	case classfile.FloatConst:
 		f.PushOpstackFloat(float32(val))
 	case string:
-		cls, err := f.GetMethod().Cls.Loader.LoadClass("java/lang/String")
-		if err != nil {
-			panic(err)
-		}
-		o, err := cls.NewObject()
+		o, err := f.GetMethod().Cls.Loader.JString(val)
 		if err != nil {
 			panic(err)
 		}

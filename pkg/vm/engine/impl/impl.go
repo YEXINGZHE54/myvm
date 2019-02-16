@@ -25,7 +25,7 @@ func NewVM(bootPath, classPath string) vm.VM {
 }
 
 func (vm *VMImpl) Startup(class string, args []string) (err error) {
-	t := thread.NewThread(1024, vm, class)
+	t := thread.NewThread(1024, vm, class, args)
 	return t.Run()
 }
 
