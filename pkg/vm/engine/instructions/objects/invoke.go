@@ -46,9 +46,19 @@ func (i *InvokeVirtualInst) Exec(f *stack.Frame) {
 	}
 	if ref.Name == "<init>" || ref.Name == "<clinit>" {
 		//TODO: it panics?
-//		panic("virtual method could not be instance initialization method, nor class or interface initialization method")
+		panic("virtual method could not be instance initialization method, nor class or interface initialization method")
 	}
 	obj := f.GetOpstackSlot(ref.Ref.ArgSlot-1).Ref
+	//TODO: for System.out, it's registered natives, so System.out.println may results in nullException
+	if ref.Name == "println" && ref.Desc[len(ref.Desc)-1] == 'V' { //void function, just print them
+		for idx := 0; idx < ref.Ref.ArgSlot-1; idx = idx + 1 {
+			slot := f.PopOpstackSlot()
+			println(slot.Val, slot.Ref)
+		}
+		// pop System.out
+		f.PopOpstackSlot()
+		return
+	}
 	invokem, err := obj.Class.LookupVirtualMethod(ref.Ref)
 	if err != nil {
 		panic(err)

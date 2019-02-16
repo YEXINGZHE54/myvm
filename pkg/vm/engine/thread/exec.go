@@ -4,6 +4,7 @@ import (
 	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/instructions"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/reflect"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/memory/stack"
+	"github.com/kr/pretty"
 	"runtime"
 )
 
@@ -50,10 +51,11 @@ func (t *Thread) loop() (err error) {
 	defer func() {
 		if r := recover(); r != nil {
 			t.Dump()
+			pretty.Println(r)
+			var buf [40960]byte
+			n := runtime.Stack(buf[:], true)
+			println(string(buf[:n]))
 		}
-		var buf [40960]byte
-		n := runtime.Stack(buf[:], true)
-		println(string(buf[:n]))
 	}()
 	for t.stack.Current() != nil {
 		f := t.stack.Current()

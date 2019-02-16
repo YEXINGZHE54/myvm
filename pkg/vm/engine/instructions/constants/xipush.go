@@ -6,7 +6,8 @@ import (
 )
 
 const (
-
+	bipush_op = 0x10
+	sipush_op = 0x11
 )
 
 type (
@@ -43,6 +44,6 @@ func (i *SIPushInst) Exec(f *stack.Frame) {
 }
 
 func init() {
-	instructions.Register(opcode_noop, &BIPushInst{})
-	instructions.Register(opcode_noop, &SIPushInst{})
+	instructions.Register(bipush_op, &BIPushInst{})
+	instructions.Register(sipush_op, &SIPushInst{})
 }

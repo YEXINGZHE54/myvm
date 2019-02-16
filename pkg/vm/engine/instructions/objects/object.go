@@ -75,15 +75,15 @@ func (i *GetInst) Exec(f *stack.Frame) {
 	obj := f.PopOpstackRef()
 	switch ref.Ref.Desc[0] {
 	case 'Z','B','C','S','I':
-		f.PushOpstackVal(obj.Fields.GetVal(ref.Ref.SlotId))
+		f.PushOpstackVal(obj.Fields().GetVal(ref.Ref.SlotId))
 	case 'F':
-		f.PushOpstackFloat(obj.Fields.GetFloat(ref.Ref.SlotId))
+		f.PushOpstackFloat(obj.Fields().GetFloat(ref.Ref.SlotId))
 	case 'J':
-		f.PushOpstackLong(obj.Fields.GetLong(ref.Ref.SlotId))
+		f.PushOpstackLong(obj.Fields().GetLong(ref.Ref.SlotId))
 	case 'D':
-		f.PushOpstackDouble(obj.Fields.GetDouble(ref.Ref.SlotId))
+		f.PushOpstackDouble(obj.Fields().GetDouble(ref.Ref.SlotId))
 	case 'L','[': //object or array
-		f.PushOpstackRef(obj.Fields.GetRef(ref.Ref.SlotId))
+		f.PushOpstackRef(obj.Fields().GetRef(ref.Ref.SlotId))
 	}
 }
 
@@ -106,19 +106,19 @@ func (i *PutInst) Exec(f *stack.Frame) {
 	switch ref.Ref.Desc[0] {
 	case 'Z','B','C','S','I':
 		v := f.PopOpstackVal()
-		f.PopOpstackRef().Fields.SetVal(ref.Ref.SlotId, v)
+		f.PopOpstackRef().Fields().SetVal(ref.Ref.SlotId, v)
 	case 'F':
 		v := f.PopOpstackFloat()
-		f.PopOpstackRef().Fields.SetFloat(ref.Ref.SlotId, v)
+		f.PopOpstackRef().Fields().SetFloat(ref.Ref.SlotId, v)
 	case 'J':
 		v := f.PopOpstackLong()
-		f.PopOpstackRef().Fields.SetLong(ref.Ref.SlotId, v)
+		f.PopOpstackRef().Fields().SetLong(ref.Ref.SlotId, v)
 	case 'D':
 		v := f.PopOpstackDouble()
-		f.PopOpstackRef().Fields.SetDouble(ref.Ref.SlotId, v)
+		f.PopOpstackRef().Fields().SetDouble(ref.Ref.SlotId, v)
 	case 'L','[': //object or array
 		v := f.PopOpstackRef()
-		f.PopOpstackRef().Fields.SetRef(ref.Ref.SlotId, v)
+		f.PopOpstackRef().Fields().SetRef(ref.Ref.SlotId, v)
 	}
 }
 

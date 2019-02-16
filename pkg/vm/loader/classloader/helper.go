@@ -20,8 +20,10 @@ func FileToClass(cf *classfile.ClassFile) (c *reflect.Class, err error) {
 	c.Methods = NewMethods(c, cf)
 	// constants info
 	var v interface{}
+	var double bool
 	for idx := 0; idx < len(cf.Constants); idx = idx + 1 {
 		v = cf.Constants[idx]
+		double = false
 		switch val := v.(type) {
 		case classfile.StringConst:
 			v = cf.GetUTF8(classfile.ToIdx(val))
@@ -35,8 +37,13 @@ func FileToClass(cf *classfile.ClassFile) (c *reflect.Class, err error) {
 			v = &reflect.MethodRef{ getCNT(cf, val.Class, val.Nametype),nil}
 		case classfile.LongConst, classfile.DoubleConst:
 			idx = idx + 1 //skip
+			double = true
 		}
 		c.Consts = append(c.Consts, v)
+		//influnced by long/double, java ref index will increased, we must adapt to it
+		if double {
+			c.Consts = append(c.Consts, nil)
+		}
 	}
 	return
 }

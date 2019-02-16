@@ -121,6 +121,20 @@ func (l *loader) LoadClass(cls string) (c *reflect.Class, err error) {
 	if ok {
 		return
 	}
+	if len(cls) > 1 && cls[0] == '[' { //array class
+		c, err = l.loadArrayClass(cls)
+	} else {
+		c, err = l.loadObjectClass(cls)
+	}
+	if err != nil {
+		return
+	}
+	// finnaly record it
+	l.classes[cls] = c
+	return
+}
+
+func (l *loader) loadObjectClass(cls string) (c *reflect.Class, err error) {
 	// read classfile
 	cf, err := l.readClass(cls)
 	if err != nil {
@@ -146,7 +160,35 @@ func (l *loader) LoadClass(cls string) (c *reflect.Class, err error) {
 	prepare(c)
 	// initialzie
 	init_statics(c)
-	// finnaly record it
-	l.classes[cls] = c
+	return
+}
+
+func (l *loader) loadArrayClass(cls string) (c *reflect.Class, err error) {
+	supername := "java/lang/Object"
+	ifacenames := []string{"java/lang/Cloneable", "java/io/Serializable"}
+	super, err := l.LoadClass(supername)
+	if err != nil {
+		return
+	}
+	var ifaces []*reflect.Class
+	for _, ifn := range ifacenames {
+		iface, err := l.LoadClass(ifn)
+		if err != nil {
+			return nil, err
+		}
+		ifaces = append(ifaces, iface)
+	}
+	c = &reflect.Class{
+		Flag: reflect.ACCESS_PUBLIC,
+		Name: cls,
+		SuperName: supername,
+		InterfaceNames: ifacenames,
+		Loader: l,
+		Super: super,
+		Interfaces: ifaces,
+		Started: true, //skip <clinit>
+	}
+	// load componet class
+	_, err = c.ComponentClass()
 	return
 }

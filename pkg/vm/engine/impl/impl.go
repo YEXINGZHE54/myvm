@@ -6,6 +6,7 @@ import (
 	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/reflect"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/loader/classloader"
 	// including instruments
+	_ "github.com/YEXINGZHE54/myvm/pkg/vm/engine/instructions/array"
 	_ "github.com/YEXINGZHE54/myvm/pkg/vm/engine/instructions/constants"
 	_ "github.com/YEXINGZHE54/myvm/pkg/vm/engine/instructions/objects"
 	_ "github.com/YEXINGZHE54/myvm/pkg/vm/engine/instructions/stacks"

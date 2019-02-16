@@ -1,5 +1,9 @@
 package reflect
 
+/*
+Resolve method and lookup method
+ */
+
 import (
 	"errors"
 	"strings"

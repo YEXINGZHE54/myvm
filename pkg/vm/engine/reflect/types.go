@@ -9,7 +9,7 @@ type (
 		ResolveIfaceMethod(clsref *MethodRef) (err error)
 	}
 	Object struct {
-		Fields Slots
+		fields interface{}
 		Class *Class
 	}
 	Class struct {

@@ -6,7 +6,21 @@ import (
 )
 
 const (
-
+	constnull_op = 0x01
+	dconst0_op = 0x0e
+	dconst1_op = 0x0f
+	fconst0_op = 0x0b
+	fconst1_op = 0x0c
+	fconst2_op = 0x0d
+	iconstm1_op = 0x02
+	iconst0_op = 0x03
+	iconst1_op = 0x04
+	iconst2_op = 0x05
+	iconst3_op = 0x06
+	iconst4_op = 0x07
+	iconst5_op = 0x08
+	lcosnt0_op = 0x09
+	lconst1_op = 0x0a
 )
 
 type (
@@ -212,19 +226,19 @@ func (i *LConst1Inst) Exec(f *stack.Frame) {
 }
 
 func init() {
-	instructions.Register(opcode_noop, &ConstNullInst{})
-	instructions.Register(opcode_noop, &DConst0Inst{})
-	instructions.Register(opcode_noop, &DConst1Inst{})
-	instructions.Register(opcode_noop, &FConst0Inst{})
-	instructions.Register(opcode_noop, &FConst1Inst{})
-	instructions.Register(opcode_noop, &FConst2Inst{})
-	instructions.Register(opcode_noop, &IConstM1Inst{})
-	instructions.Register(opcode_noop, &IConst0Inst{})
-	instructions.Register(opcode_noop, &IConst1Inst{})
-	instructions.Register(opcode_noop, &IConst2Inst{})
-	instructions.Register(opcode_noop, &IConst3Inst{})
-	instructions.Register(opcode_noop, &IConst4Inst{})
-	instructions.Register(opcode_noop, &IConst5Inst{})
-	instructions.Register(opcode_noop, &LConst0Inst{})
-	instructions.Register(opcode_noop, &LConst1Inst{})
+	instructions.Register(constnull_op, &ConstNullInst{})
+	instructions.Register(dconst0_op, &DConst0Inst{})
+	instructions.Register(dconst1_op, &DConst1Inst{})
+	instructions.Register(fconst0_op, &FConst0Inst{})
+	instructions.Register(fconst1_op, &FConst1Inst{})
+	instructions.Register(fconst2_op, &FConst2Inst{})
+	instructions.Register(iconstm1_op, &IConstM1Inst{})
+	instructions.Register(iconst0_op, &IConst0Inst{})
+	instructions.Register(iconst1_op, &IConst1Inst{})
+	instructions.Register(iconst2_op, &IConst2Inst{})
+	instructions.Register(iconst3_op, &IConst3Inst{})
+	instructions.Register(iconst4_op, &IConst4Inst{})
+	instructions.Register(iconst5_op, &IConst5Inst{})
+	instructions.Register(lcosnt0_op, &LConst0Inst{})
+	instructions.Register(lconst1_op, &LConst1Inst{})
 }

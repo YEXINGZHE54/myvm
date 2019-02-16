@@ -43,7 +43,15 @@ func (i *LdcInst) Exec(f *stack.Frame) {
 	case classfile.FloatConst:
 		f.PushOpstackFloat(float32(val))
 	case string:
-		f.PushOpstackRef(new(reflect.Object))
+		cls, err := f.GetMethod().Cls.Loader.LoadClass("java/lang/String")
+		if err != nil {
+			panic(err)
+		}
+		o, err := cls.NewObject()
+		if err != nil {
+			panic(err)
+		}
+		f.PushOpstackRef(o)
 	case reflect.ClsRef:
 		var err error
 		c := val.Ref
