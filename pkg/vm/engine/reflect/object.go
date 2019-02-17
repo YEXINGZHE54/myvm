@@ -1,6 +1,9 @@
 package reflect
 
-import "errors"
+import (
+	"errors"
+	"github.com/YEXINGZHE54/myvm/pkg/utils"
+)
 
 var (
 	ErrorInvalidArrayClassName = errors.New("invalid array class name")
@@ -17,10 +20,9 @@ func (c *Class) NewObject() (o *Object, err error) {
 	return
 }
 
-//TODO
 // convert to class object
-func (c *Class) ToObject() (o *Object, err error) {
-	return
+func (c *Class) ToObject() (o *Object) {
+	return c.ClsObj
 }
 
 func (o *Object) Fields() Slots {
@@ -53,4 +55,16 @@ func (o *Object) GetField(f *Field) (v interface{}) {
 		v = slot.Val
 	}
 	return
+}
+
+func (o *Object) GoString() string {
+	field, err := o.Class.GetInstanceField("value", "[C")
+	if err != nil {
+		panic(err)
+	}
+	chars := o.GetField(field).(*Object).Chars()
+	if err != nil {
+		panic(err)
+	}
+	return utils.UTF16ToString(chars)
 }

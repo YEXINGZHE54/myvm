@@ -11,7 +11,7 @@ func (c *Class) NewMArray(counts []int) (o *Object, err error) {
 }
 
 func (c *Class) ArrayFrom(val interface{}) (o *Object, err error) {
-	return &Object{val, c}, nil
+	return &Object{val, c, nil}, nil
 }
 
 func (c *Class) newMultiArray(name string, counts []int) (o *Object, err error) {
@@ -29,21 +29,21 @@ func (c *Class) newMultiArray(name string, counts []int) (o *Object, err error) 
 	}
 	switch name[1] {
 	case 'Z', 'B':
-		o = &Object{make([]int8, counts[0]), cls}
+		o = &Object{make([]int8, counts[0]), cls, nil}
 	case 'C':
-		o = &Object{make([]uint16, counts[0]), cls}
+		o = &Object{make([]uint16, counts[0]), cls, nil}
 	case 'S':
-		o = &Object{make([]int16, counts[0]), cls}
+		o = &Object{make([]int16, counts[0]), cls, nil}
 	case 'I':
-		o = &Object{make([]int32, counts[0]), cls}
+		o = &Object{make([]int32, counts[0]), cls, nil}
 	case 'J':
-		o = &Object{make([]int64, counts[0]), cls}
+		o = &Object{make([]int64, counts[0]), cls, nil}
 	case 'F':
-		o = &Object{make([]float32, counts[0]), cls}
+		o = &Object{make([]float32, counts[0]), cls, nil}
 	case 'D':
-		o = &Object{make([]float64, counts[0]), cls}
+		o = &Object{make([]float64, counts[0]), cls, nil}
 	case 'L': //refs
-		o = &Object{make([]*Object, counts[0]), cls}
+		o = &Object{make([]*Object, counts[0]), cls, nil}
 	case '[': //multi array
 		refs := make([]*Object, counts[0])
 		for idx := range refs {
@@ -52,7 +52,7 @@ func (c *Class) newMultiArray(name string, counts []int) (o *Object, err error) 
 				return
 			}
 		}
-		o = &Object{refs, cls}
+		o = &Object{refs, cls, nil}
 	default:
 		err = ErrorInvalidArrayClassName
 	}

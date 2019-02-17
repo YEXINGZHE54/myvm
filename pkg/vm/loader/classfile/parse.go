@@ -110,7 +110,6 @@ func (f *ClassFile) parseConstant(r *Reader) (consts []Constant, err error) {
 		case CONSTANT_InvokeDynamic:
 			r.read2()
 			r.read2()
-			//TODO: skip
 		default:
 			println("const type: ")
 			println(r.index)

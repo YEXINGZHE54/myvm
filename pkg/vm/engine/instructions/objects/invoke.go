@@ -1,7 +1,6 @@
 package objects
 
 import (
-	"github.com/YEXINGZHE54/myvm/pkg/utils"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/instructions"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/reflect"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/memory/stack"
@@ -58,15 +57,7 @@ func (i *InvokeVirtualInst) Exec(f *stack.Frame) {
 			} else {
 				switch slot.Ref.Class.Name {
 				case "java/lang/String":
-					field, err := slot.Ref.Class.GetInstanceField("value", "[C")
-					if err != nil {
-						panic(err)
-					}
-					chars := slot.Ref.GetField(field).(*reflect.Object).Chars()
-					if err != nil {
-						panic(err)
-					}
-					println(utils.UTF16ToString(chars))
+					println(slot.Ref.GoString())
 				default:
 					println(slot.Ref.Class.Name, slot.Ref)
 				}

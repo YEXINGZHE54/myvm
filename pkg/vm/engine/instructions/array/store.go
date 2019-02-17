@@ -7,10 +7,13 @@ import (
 
 const (
 	iastore_op = 0x4f
+	castore_op = 0x55
 )
 
 type (
 	IArrStore struct{
+	}
+	CArrStore struct {
 	}
 )
 
@@ -29,6 +32,22 @@ func (i *IArrStore) Exec(f *stack.Frame) {
 	arr.Ints()[idx] = val
 }
 
+func (i *CArrStore) Clone() instructions.Inst {
+	return i
+}
+
+func (i *CArrStore) Fetch(coder *instructions.CodeReader) {
+
+}
+
+func (i *CArrStore) Exec(f *stack.Frame) {
+	val := f.PopOpstackVal()
+	idx := int(f.PopOpstackVal())
+	arr := f.PopOpstackRef() // must be of type [I
+	arr.Chars()[idx] = uint16(val)
+}
+
 func init() {
 	instructions.Register(iastore_op, &IArrStore{})
+	instructions.Register(castore_op, &CArrStore{})
 }

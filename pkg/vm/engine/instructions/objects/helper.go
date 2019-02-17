@@ -30,11 +30,4 @@ func invokeMethod(f *stack.Frame, m *reflect.Method)  {
 	for i := m.ArgSlot - 1; i >= 0; i = i - 1 {
 		newFrame.SetLocalSlot(i, f.PopOpstackSlot())
 	}
-	if m.IsNative() {
-		if m.Name == "registerNatives" {
-			f.Stack.Pop() //just return
-		} else {
-			panic("native method: " + m.Name)
-		}
-	}
 }

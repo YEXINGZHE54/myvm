@@ -6,12 +6,9 @@ import (
 	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/reflect"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/loader/classloader"
 	// including instruments
-	_ "github.com/YEXINGZHE54/myvm/pkg/vm/engine/instructions/array"
-	_ "github.com/YEXINGZHE54/myvm/pkg/vm/engine/instructions/constants"
-	_ "github.com/YEXINGZHE54/myvm/pkg/vm/engine/instructions/objects"
-	_ "github.com/YEXINGZHE54/myvm/pkg/vm/engine/instructions/stacks"
-	_ "github.com/YEXINGZHE54/myvm/pkg/vm/engine/instructions/store"
-	_ "github.com/YEXINGZHE54/myvm/pkg/vm/engine/instructions/load"
+	_ "github.com/YEXINGZHE54/myvm/pkg/vm/engine/instructions/includes"
+	// natives
+	_ "github.com/YEXINGZHE54/myvm/pkg/vm/natives/includes"
 )
 
 type (

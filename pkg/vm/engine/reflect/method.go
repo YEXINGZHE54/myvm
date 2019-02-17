@@ -16,8 +16,8 @@ var (
 	ErrorBadMethodDescriptor = errors.New("bad method descriptor")
 )
 
-func (m *Method) ParseSignature() (err error) {
-	md, err := parseSignature(m.Desc)
+func (m *Method) ParseSignature() (md *MethodDescriptor, err error) {
+	md, err = parseSignature(m.Desc)
 	if err != nil {
 		return
 	}
@@ -251,7 +251,7 @@ func parseSignature(sig string) (d *MethodDescriptor, err error) {
 				err = ErrorBadMethodDescriptor
 				return
 			}
-			d.Args = append(d.Args, sig[idx+1:idx+next])
+			d.Args = append(d.Args, sig[idx:idx+next+1])
 			idx = idx + next
 		case '[':
 			continue
@@ -279,7 +279,7 @@ func parseSignature(sig string) (d *MethodDescriptor, err error) {
 				err = ErrorBadMethodDescriptor
 				return
 			}
-			d.Return = sig[idx+1:idx+next]
+			d.Return = sig[idx:idx+next+1]
 			idx = idx + next
 		case '[':
 			continue

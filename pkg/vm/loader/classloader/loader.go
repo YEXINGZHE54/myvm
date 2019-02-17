@@ -21,12 +21,20 @@ var (
 	ErrorFieldNotFound = errors.New("field not found")
 )
 
-func NewLoader(bootPath, classPath string) (l reflect.Loader) {
-	l = &loader{make(map[string]*reflect.Class),
+func NewLoader(bootPath, classPath string) (reflect.Loader) {
+	l := &loader{make(map[string]*reflect.Class),
 		classpath.ParseOption(bootPath, classPath),
 		make(map[string]*reflect.Object),
 	}
-	return
+	err := l.prepareReflect();
+	if err != nil {
+		panic(err)
+	}
+	err = l.loadPrims()
+	if err != nil {
+		panic(err)
+	}
+	return l
 }
 
 func (l *loader) readClass(cls string) (cf *classfile.ClassFile, err error) {
@@ -92,10 +100,6 @@ func (l *loader) ResolveMethod(ref *reflect.MethodRef) (err error) {
 		if err != nil {
 			return
 		}
-		err = ref.Ref.ParseSignature()
-		if err != nil {
-			return
-		}
 	}
 	return
 }
@@ -108,10 +112,6 @@ func (l *loader) ResolveIfaceMethod(ref *reflect.MethodRef) (err error) {
 			return err
 		}
 		ref.Ref, err = cls.LookupIfaceMethod(ref.Name, ref.Desc)
-		if err != nil {
-			return
-		}
-		err = ref.Ref.ParseSignature()
 		if err != nil {
 			return
 		}
@@ -132,6 +132,14 @@ func (l *loader) LoadClass(cls string) (c *reflect.Class, err error) {
 	}
 	if err != nil {
 		return
+	}
+	// set up reflect info
+	if ccls, ok := l.classes["java/lang/Class"]; ok {
+		c.ClsObj, err = ccls.NewObject()
+		if err != nil {
+			return
+		}
+		c.ClsObj.Extra = c
 	}
 	// finnaly record it
 	l.classes[cls] = c

@@ -74,13 +74,37 @@ func NewMethods(cls *reflect.Class, cf *classfile.ClassFile) (result []*reflect.
 	for _, fi := range cf.Methods {
 		method := new(reflect.Method)
 		copyMember(&(method.Member), &fi, cls, cf)
-		for _, attr := range fi.Attributes {
-			if attr.Name == "Code" {
-				code := attr.Data.(*classfile.Code)
-				method.MaxStack = int(code.MaxStacks)
-				method.MaxLocal = int(code.MaxLocals)
-				method.Codes = code.Codes
-				break
+		md, err := method.ParseSignature();
+		if err != nil {
+			panic(err)
+		}
+		if method.IsNative() {
+			// no need to search code, because empty
+			method.MaxStack = 4
+			method.MaxLocal = method.ArgSlot
+			switch md.Return[0] {
+			case 'V': // return
+				method.Codes = []byte{0xfe, 0xb1}
+			case 'D': // dreturn
+				method.Codes = []byte{0xfe, 0xaf}
+			case 'F': // freturn
+				method.Codes = []byte{0xfe, 0xae}
+			case 'J': // lreturn
+				method.Codes = []byte{0xfe, 0xad}
+			case 'L','[': // areturn
+				method.Codes = []byte{0xfe, 0xb0}
+			default: //ireturn
+				method.Codes = []byte{0xfe, 0xac}
+			}
+		} else {
+			for _, attr := range fi.Attributes {
+				if attr.Name == "Code" {
+					code := attr.Data.(*classfile.Code)
+					method.MaxStack = int(code.MaxStacks)
+					method.MaxLocal = int(code.MaxLocals)
+					method.Codes = code.Codes
+					break
+				}
 			}
 		}
 		result = append(result, method)

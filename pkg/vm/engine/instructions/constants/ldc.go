@@ -51,13 +51,13 @@ func (i *LdcInst) Exec(f *stack.Frame) {
 		var err error
 		c := val.Ref
 		if c == nil {
-			val.Ref, err = cls.Loader.LoadClass(val.Name)
+			c, err = cls.Loader.LoadClass(val.Name)
 			if err != nil {
 				panic(err)
 			}
-			c = val.Ref
+			val.Ref = c
 		}
-		f.PushOpstackRef(nil)
+		f.PushOpstackRef(c.ToObject())
 	default:
 		panic("unsupported ldc")
 	}

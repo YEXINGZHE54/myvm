@@ -9,5 +9,6 @@ public class HelloWorld {
         int[] arr = {1,2,3};
         System.out.println(arr[0]);
         System.out.println(args[0]);
+        System.out.println(int.class.getName());
     }
 }

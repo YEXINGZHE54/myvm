@@ -12,6 +12,7 @@ type (
 	Object struct {
 		fields interface{}
 		Class *Class
+		Extra interface{} // used for class object, recording *class
 	}
 	Class struct {
 		Flag uint16
@@ -27,6 +28,7 @@ type (
 		InstanceSlotCount int
 		StaticVars Slots
 		Started bool
+		ClsObj *Object
 	}
 	Member struct {
 		Flag uint16
