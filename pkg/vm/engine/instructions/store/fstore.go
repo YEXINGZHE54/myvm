@@ -6,6 +6,7 @@ import (
 )
 
 const (
+	fstore_op = 0x38
 	fstore0_op = 0x43
 	fstore1_op = 0x44
 	fstore2_op = 0x45
@@ -13,62 +14,34 @@ const (
 )
 
 type (
-	FStore0 struct{
-	}
-	FStore1 struct{
-	}
-	FStore2 struct{
-	}
-	FStore3 struct{
+	FStore struct {
+		idx int
 	}
 )
 
-func (i *FStore0) Clone() instructions.Inst {
-	return i
+var (
+	fstore0 = &FStore{1}
+	fstore1 = &FStore{2}
+	fstore2 = &FStore{3}
+	fstore3 = &FStore{4}
+)
+
+func (i *FStore) Clone() instructions.Inst {
+	if i.idx > 0 {
+		return i
+	}
+	return &FStore{}
 }
 
-func (i *FStore0) Fetch(coder *instructions.CodeReader) {
-
+func (i *FStore) Fetch(coder *instructions.CodeReader) {
+	if i.idx > 0 {
+		return
+	}
+	i.idx = int(coder.Read1())
 }
 
-func (i *FStore0) Exec(f *stack.Frame) {
-	fstore(f, 0)
-}
-
-func (i *FStore1) Clone() instructions.Inst {
-	return i
-}
-
-func (i *FStore1) Fetch(coder *instructions.CodeReader) {
-
-}
-
-func (i *FStore1) Exec(f *stack.Frame) {
-	fstore(f, 1)
-}
-
-func (i *FStore2) Clone() instructions.Inst {
-	return i
-}
-
-func (i *FStore2) Fetch(coder *instructions.CodeReader) {
-
-}
-
-func (i *FStore2) Exec(f *stack.Frame) {
-	fstore(f, 2)
-}
-
-func (i *FStore3) Clone() instructions.Inst {
-	return i
-}
-
-func (i *FStore3) Fetch(coder *instructions.CodeReader) {
-
-}
-
-func (i *FStore3) Exec(f *stack.Frame) {
-	fstore(f, 3)
+func (i *FStore) Exec(f *stack.Frame) {
+	fstore(f, i.idx-1)
 }
 
 func fstore(f *stack.Frame, idx int)  {
@@ -77,8 +50,9 @@ func fstore(f *stack.Frame, idx int)  {
 }
 
 func init() {
-	instructions.Register(fstore0_op, &FStore0{})
-	instructions.Register(fstore1_op, &FStore1{})
-	instructions.Register(fstore2_op, &FStore2{})
-	instructions.Register(fstore3_op, &FStore3{})
+	instructions.Register(fstore_op, &FStore{})
+	instructions.Register(fstore0_op, fstore0)
+	instructions.Register(fstore1_op, fstore1)
+	instructions.Register(fstore2_op, fstore2)
+	instructions.Register(fstore3_op, fstore3)
 }

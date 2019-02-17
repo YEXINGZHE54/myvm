@@ -44,11 +44,11 @@ func (f *Frame) PopOpstackVal() int32 {
 
 func (f *Frame) PushOpstackLong(val int64) {
 	f.opStack.slots.SetLong(f.opStack.top, val)
-	f.opStack.top = f.opStack.top + 1
+	f.opStack.top = f.opStack.top + 2
 }
 
 func (f *Frame) PopOpstackLong() int64 {
-	f.opStack.top = f.opStack.top - 1
+	f.opStack.top = f.opStack.top - 2
 	return f.opStack.slots.GetLong(f.opStack.top)
 }
 
@@ -64,11 +64,11 @@ func (f *Frame) PopOpstackFloat() float32 {
 
 func (f *Frame) PushOpstackDouble(val float64) {
 	f.opStack.slots.SetDouble(f.opStack.top, val)
-	f.opStack.top = f.opStack.top + 1
+	f.opStack.top = f.opStack.top + 2
 }
 
 func (f *Frame) PopOpstackDouble() float64 {
-	f.opStack.top = f.opStack.top - 1
+	f.opStack.top = f.opStack.top - 2
 	return f.opStack.slots.GetDouble(f.opStack.top)
 }
 

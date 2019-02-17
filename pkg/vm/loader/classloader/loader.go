@@ -78,10 +78,12 @@ func (l *loader) ResolveField(ref *reflect.FieldRef) (err error) {
 		if err != nil {
 			return err
 		}
-		for _, field := range cls.Fields {
-			if field.Name == ref.Name && field.Desc == ref.Desc {
-				ref.Ref = field
-				return
+		for c := cls; c != nil; c = c.Super {
+			for _, field := range c.Fields {
+				if field.Name == ref.Name && field.Desc == ref.Desc {
+					ref.Ref = field
+					return
+				}
 			}
 		}
 		return ErrorFieldNotFound

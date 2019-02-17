@@ -12,10 +12,7 @@ func init_class(f *stack.Frame, cls *reflect.Class) (inited bool, err error) {
 		return
 	}
 	thread := f.Stack.Thread().(*thread2.Thread)
-	err = thread.InitClass(cls)
-	if err != nil {
-		return
-	}
+	thread.InitClass(cls)
 	return
 }
 

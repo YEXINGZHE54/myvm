@@ -1,5 +1,9 @@
 package reflect
 
+var (
+	primitives map[string]bool = make(map[string]bool)
+)
+
 func (c *Class) IsClass() bool {
 	return c.Flag & ACCESS_INTERFACE == 0
 }
@@ -10,6 +14,14 @@ func (c *Class) IsInterface() bool {
 
 func (c *Class) IsSuperSet() bool {
 	return c.Flag & ACCESS_SUPER > 0
+}
+
+func (c *Class) IsArray() bool {
+	return c.Name[0] == '['
+}
+
+func (c *Class) IsPrimitive() bool {
+	return primitives[c.Name]
 }
 
 func (f *Field) IsStatic() bool {
@@ -42,4 +54,30 @@ func (m *Method) IsProtected() bool {
 
 func (m *Method) IsNative() bool {
 	return m.Flag & ACCESS_NATIVE > 0
+}
+
+func init()  {
+	prims := []string{
+		"void",
+		"java/lang/Void",
+		"boolean",
+		"java/lang/Boolean",
+		"byte",
+		"java/lang/Byte",
+		"char",
+		"java/lang/Character",
+		"short",
+		"java/lang/Short",
+		"int",
+		"java/lang/Integer",
+		"long",
+		"java/lang/Long",
+		"float",
+		"java/lang/Float",
+		"double",
+		"java/lang/Double",
+	}
+	for _, p := range prims {
+		primitives[p] = true
+	}
 }

@@ -47,14 +47,13 @@ func (t *Thread) Run() (err error) {
 	return
 }
 
-func (t *Thread) InitClass(cls *reflect.Class) (err error) {
+func (t *Thread) InitClass(cls *reflect.Class) {
 	cls.Started = true
 	// push clinit method
 	clinit, err := cls.GetClinit()
-	if err != nil {
-		return
+	if err == nil && clinit != nil {
+		t.prepareFrame(clinit)
 	}
-	t.prepareFrame(clinit)
 	// init super class if not started
 	if cls.Super != nil && !cls.Started {
 		t.InitClass(cls.Super)

@@ -35,8 +35,38 @@ func (i *LdcInst) Fetch(coder *instructions.CodeReader) {
 
 func (i *LdcInst) Exec(f *stack.Frame) {
 	println("ldc exec")
+	ldc(f, int(i.idx))
+}
+
+func (i *LdcwInst) Clone() instructions.Inst {
+	return &LdcwInst{}
+}
+
+func (i *LdcwInst) Fetch(coder *instructions.CodeReader) {
+	i.idx = coder.Read2()
+}
+
+func (i *LdcwInst) Exec(f *stack.Frame) {
+	println("ldcw exec")
+	ldc(f, int(i.idx))
+}
+
+func (i *Ldc2wInst) Clone() instructions.Inst {
+	return &Ldc2wInst{}
+}
+
+func (i *Ldc2wInst) Fetch(coder *instructions.CodeReader) {
+	i.idx = coder.Read2()
+}
+
+func (i *Ldc2wInst) Exec(f *stack.Frame) {
+	println("ldc2w exec")
+	ldc2(f, int(i.idx))
+}
+
+func ldc(f *stack.Frame, idx int) {
 	cls := f.GetMethod().Cls
-	switch val := cls.Consts[i.idx].(type) {
+	switch val := cls.Consts[idx].(type) {
 	case classfile.IntegerConst:
 		f.PushOpstackVal(int32(val))
 	case classfile.FloatConst:
@@ -47,7 +77,7 @@ func (i *LdcInst) Exec(f *stack.Frame) {
 			panic(err)
 		}
 		f.PushOpstackRef(o)
-	case reflect.ClsRef:
+	case *reflect.ClsRef:
 		var err error
 		c := val.Ref
 		if c == nil {
@@ -63,30 +93,16 @@ func (i *LdcInst) Exec(f *stack.Frame) {
 	}
 }
 
-func (i *LdcwInst) Clone() instructions.Inst {
-	return &LdcwInst{}
-}
-
-func (i *LdcwInst) Fetch(coder *instructions.CodeReader) {
-	i.idx = coder.Read2()
-}
-
-func (i *LdcwInst) Exec(f *stack.Frame) {
-	println("ldcw exec")
-	//f.PushOpstackRef(nil)
-}
-
-func (i *Ldc2wInst) Clone() instructions.Inst {
-	return &Ldc2wInst{}
-}
-
-func (i *Ldc2wInst) Fetch(coder *instructions.CodeReader) {
-	i.idx = coder.Read2()
-}
-
-func (i *Ldc2wInst) Exec(f *stack.Frame) {
-	println("ldc2w exec")
-	//f.PushOpstackRef(nil)
+func ldc2(f *stack.Frame, idx int)  {
+	cls := f.GetMethod().Cls
+	switch val := cls.Consts[idx].(type) {
+	case classfile.LongConst:
+		f.PushOpstackLong(int64(val))
+	case classfile.DoubleConst:
+		f.PushOpstackDouble(float64(val))
+	default:
+		panic("unsupported ldc")
+	}
 }
 
 func init() {

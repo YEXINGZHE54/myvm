@@ -101,7 +101,7 @@ func (o *Object) ArrLength() int {
 		return len(val)
 	case []int64:
 		return len(val)
-	case []uint8:
+	case []uint16:
 		return len(val)
 	case []float32:
 		return len(val)
@@ -112,4 +112,34 @@ func (o *Object) ArrLength() int {
 	default:
 		panic(val)
 	}
+}
+
+func Copy(src *Object, dest *Object, srcPos, destPos, length int32) {
+	switch val := src.fields.(type) {
+	case []int8:
+		dval := dest.fields.([]int8)
+		copy(dval[destPos:destPos+length], val[srcPos:srcPos+length])
+	case []int16:
+		dval := dest.fields.([]int16)
+		copy(dval[destPos:destPos+length], val[srcPos:srcPos+length])
+	case []uint16:
+		dval := dest.fields.([]uint16)
+		copy(dval[destPos:destPos+length], val[srcPos:srcPos+length])
+	case []int32:
+		dval := dest.fields.([]int32)
+		copy(dval[destPos:destPos+length], val[srcPos:srcPos+length])
+	case []int64:
+		dval := dest.fields.([]int64)
+		copy(dval[destPos:destPos+length], val[srcPos:srcPos+length])
+	case []float32:
+		dval := dest.fields.([]float32)
+		copy(dval[destPos:destPos+length], val[srcPos:srcPos+length])
+	case []float64:
+		dval := dest.fields.([]float64)
+		copy(dval[destPos:destPos+length], val[srcPos:srcPos+length])
+	case Slots:
+		dval := dest.fields.(Slots)
+		copy(dval[destPos:destPos+length], val[srcPos:srcPos+length])
+	}
+	return
 }

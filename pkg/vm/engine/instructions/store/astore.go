@@ -6,23 +6,42 @@ import (
 )
 
 const (
+	astore_op = 0x3a
+	astore0_op = 0x4b
 	astore1_op = 0x4c
+	astore2_op = 0x4d
+	astore3_op = 0x4e
 )
 
 type (
-	Astore1Inst struct{}
+	AstoreInst struct {
+		idx int
+	}
 )
 
-func (i *Astore1Inst) Clone() instructions.Inst {
-	return i
+var (
+	astore0 = &AstoreInst{1}
+	astore1 = &AstoreInst{2}
+	astore2 = &AstoreInst{3}
+	astore3 = &AstoreInst{4}
+)
+
+func (i *AstoreInst) Clone() instructions.Inst {
+	if i.idx > 0 {
+		return i
+	}
+	return &AstoreInst{}
 }
 
-func (i *Astore1Inst) Fetch(coder *instructions.CodeReader) {
-
+func (i *AstoreInst) Fetch(coder *instructions.CodeReader) {
+	if i.idx > 0 {
+		return
+	}
+	i.idx = int(coder.Read1()) + 1
 }
 
-func (i *Astore1Inst) Exec(f *stack.Frame) {
-	astore(f, 1)
+func (i *AstoreInst) Exec(f *stack.Frame) {
+	astore(f, i.idx-1)
 }
 
 func astore(f *stack.Frame, idx int)  {
@@ -31,5 +50,9 @@ func astore(f *stack.Frame, idx int)  {
 }
 
 func init() {
-	instructions.Register(astore1_op, &Astore1Inst{})
+	instructions.Register(astore_op, &AstoreInst{})
+	instructions.Register(astore0_op, astore0)
+	instructions.Register(astore1_op, astore1)
+	instructions.Register(astore2_op, astore2)
+	instructions.Register(astore3_op, astore3)
 }

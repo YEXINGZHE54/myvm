@@ -8,4 +8,6 @@ import (
 	_ "github.com/YEXINGZHE54/myvm/pkg/vm/engine/instructions/store"
 	_ "github.com/YEXINGZHE54/myvm/pkg/vm/engine/instructions/load"
 	_ "github.com/YEXINGZHE54/myvm/pkg/vm/engine/instructions/branches"
+	_ "github.com/YEXINGZHE54/myvm/pkg/vm/engine/instructions/math"
+	_ "github.com/YEXINGZHE54/myvm/pkg/vm/engine/instructions/convert"
 )

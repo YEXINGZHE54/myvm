@@ -6,6 +6,7 @@ import (
 )
 
 const (
+	aload_op = 0x19
 	aload0_op = 0x2a
 	aload1_op = 0x2b
 	aload2_op = 0x2c
@@ -13,65 +14,34 @@ const (
 )
 
 type (
-	ALoad0 struct{
-	}
-	ALoad1 struct {
-	}
-	ALoad2 struct {
-	}
-	ALoad3 struct {
+	ALoad struct {
+		idx int
 	}
 )
 
-func (i *ALoad0) Clone() instructions.Inst {
-	return i
+var (
+	aload0 = &ALoad{1}
+	aload1 = &ALoad{2}
+	aload2 = &ALoad{3}
+	aload3 = &ALoad{4}
+)
+
+func (i *ALoad) Clone() instructions.Inst {
+	if i.idx > 0 {
+		return i
+	}
+	return &ALoad{}
 }
 
-func (i *ALoad0) Fetch(coder *instructions.CodeReader) {
-
+func (i *ALoad) Fetch(coder *instructions.CodeReader) {
+	if i.idx > 0 {
+		return
+	}
+	i.idx = int(coder.Read1()) + 1
 }
 
-func (i *ALoad0) Exec(f *stack.Frame) {
-	aload(f, 0)
-}
-
-
-func (i *ALoad1) Clone() instructions.Inst {
-	return i
-}
-
-func (i *ALoad1) Fetch(coder *instructions.CodeReader) {
-
-}
-
-func (i *ALoad1) Exec(f *stack.Frame) {
-	aload(f, 1)
-}
-
-
-func (i *ALoad2) Clone() instructions.Inst {
-	return i
-}
-
-func (i *ALoad2) Fetch(coder *instructions.CodeReader) {
-
-}
-
-func (i *ALoad2) Exec(f *stack.Frame) {
-	aload(f, 2)
-}
-
-
-func (i *ALoad3) Clone() instructions.Inst {
-	return i
-}
-
-func (i *ALoad3) Fetch(coder *instructions.CodeReader) {
-
-}
-
-func (i *ALoad3) Exec(f *stack.Frame) {
-	aload(f, 3)
+func (i *ALoad) Exec(f *stack.Frame) {
+	aload(f, i.idx-1)
 }
 
 func aload(f *stack.Frame, idx int)  {
@@ -79,8 +49,9 @@ func aload(f *stack.Frame, idx int)  {
 }
 
 func init() {
-	instructions.Register(aload0_op, &ALoad0{})
-	instructions.Register(aload1_op, &ALoad1{})
-	instructions.Register(aload2_op, &ALoad2{})
-	instructions.Register(aload3_op, &ALoad3{})
+	instructions.Register(aload_op, &ALoad{})
+	instructions.Register(aload0_op, aload0)
+	instructions.Register(aload1_op, aload1)
+	instructions.Register(aload2_op, aload2)
+	instructions.Register(aload3_op, aload3)
 }

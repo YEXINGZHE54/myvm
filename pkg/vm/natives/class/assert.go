@@ -10,5 +10,5 @@ func desiredAssertionStatus0(f *stack.Frame)  {
 }
 
 func init()  {
-	natives.Register("java/lang/Class", "desiredAssertionStatus0", "(Ljava/lang/Class;)Z)", desiredAssertionStatus0)
+	natives.Register("java/lang/Class", "desiredAssertionStatus0", "(Ljava/lang/Class;)Z", desiredAssertionStatus0)
 }

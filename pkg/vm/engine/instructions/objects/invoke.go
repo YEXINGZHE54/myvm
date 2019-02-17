@@ -194,7 +194,7 @@ func (i *InvokeInterfaceInst) Exec(f *stack.Frame) {
 
 func init() {
 	instructions.Register(invokevirtual_op, &InvokeVirtualInst{})
-	instructions.Register(invokespecial_op, &InvokeVirtualInst{})
+	instructions.Register(invokespecial_op, &InvokeSpecialInst{})
 	instructions.Register(invokestatic_op, &InvokeStaticInst{})
 	instructions.Register(invokeinterface_op, &InvokeInterfaceInst{})
 }
