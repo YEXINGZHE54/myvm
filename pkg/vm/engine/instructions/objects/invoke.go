@@ -96,13 +96,13 @@ the monitor associated with objectref is entered or reentered
 as if by execution of a monitorenter instruction (§monitorenter) in the current thread.
  */
 func (i *InvokeSpecialInst) Exec(f *stack.Frame) {
-	println("invoke special exec")
 	cls := f.GetMethod().Cls
 	ref := cls.Consts[i.idx].(*reflect.MethodRef)
 	err := cls.Loader.ResolveMethod(ref)
 	if err != nil {
 		panic(err)
 	}
+	println("invoke special exec", ref.ClsName, ref.Name, ref.Desc)
 	// 1
 	m := ref.Ref
 	if m.IsProtected() &&
@@ -174,13 +174,14 @@ func (i *InvokeInterfaceInst) Fetch(coder *instructions.CodeReader) {
 
 // neally same to invoke virtual
 func (i *InvokeInterfaceInst) Exec(f *stack.Frame) {
-	println("invoke interface exec")
 	cls := f.GetMethod().Cls
 	ref := cls.Consts[i.idx].(*reflect.MethodRef)
+	println("invoke interface exec", ref.ClsName, ref.Name, ref.Desc)
 	err := cls.Loader.ResolveIfaceMethod(ref)
 	if err != nil {
 		panic(err)
 	}
+	println("resolved interface method: ", ref.Ref.Cls.Name, ref.Ref.Name, ref.Ref.Desc)
 	if ref.Name == "<init>" || ref.Name == "<clinit>" {
 		panic("interface method could not be instance initialization method, nor class or interface initialization method")
 	}
@@ -189,6 +190,7 @@ func (i *InvokeInterfaceInst) Exec(f *stack.Frame) {
 	if err != nil {
 		panic(err)
 	}
+	println("invoking interface method: ", invokem.Cls.Name, invokem.Name, invokem.Desc)
 	invokeMethod(f, invokem)
 }
 

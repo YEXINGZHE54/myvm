@@ -82,6 +82,12 @@ func (f *Frame) PopOpstackRef() *reflect.Object {
 	return f.opStack.slots.GetRef(f.opStack.top)
 }
 
+func (f *Frame) PushOpstackSlot(s reflect.Slot) {
+	f.opStack.slots.SetVal(f.opStack.top, s.Val)
+	f.opStack.slots.SetRef(f.opStack.top, s.Ref)
+	f.opStack.top = f.opStack.top + 1
+}
+
 func (f *Frame) DupStack() {
 	idx := f.opStack.top
 	f.opStack.slots[idx] = f.opStack.slots[idx-1]

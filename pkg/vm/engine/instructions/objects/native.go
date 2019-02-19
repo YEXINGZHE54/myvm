@@ -23,6 +23,7 @@ func (i *NativeInst) Fetch(coder *instructions.CodeReader) {
 }
 
 func (i *NativeInst) Exec(f *stack.Frame) {
+	println("invoke native")
 	m := f.GetMethod()
 	nativem, err := natives.LookUpNative(m.Cls.Name, m.Name, m.Desc)
 	if err != nil {

@@ -169,7 +169,7 @@ func (l *loader) JString(val string) (o *reflect.Object, err error) {
 	if err != nil {
 		return
 	}
-	valfield, err := cls.GetInstanceField("value", "[C")
+	valfield, err := cls.LookupInstanceField("value", "[C")
 	if err != nil {
 		return
 	}

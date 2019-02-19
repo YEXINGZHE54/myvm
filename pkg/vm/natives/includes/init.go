@@ -7,4 +7,7 @@ import (
 	_ "github.com/YEXINGZHE54/myvm/pkg/vm/natives/float"
 	_ "github.com/YEXINGZHE54/myvm/pkg/vm/natives/double"
 	_ "github.com/YEXINGZHE54/myvm/pkg/vm/natives/string"
+	_ "github.com/YEXINGZHE54/myvm/pkg/vm/natives/sun/misc/vm"
+	_ "github.com/YEXINGZHE54/myvm/pkg/vm/natives/sun/misc/unsafe"
+	_ "github.com/YEXINGZHE54/myvm/pkg/vm/natives/reflect"
 )

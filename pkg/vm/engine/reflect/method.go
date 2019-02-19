@@ -99,7 +99,7 @@ func (c *Class) LookupIfaceMethod(name, desc string) (m *Method, err error) {
 	}
 	// 2
 	m, err = lookupCurrent(c, name, desc)
-	if err != nil {
+	if err == nil {
 		return
 	}
 	// 3
@@ -176,7 +176,7 @@ func (c *Class) LookupVirtualMethod(m *Method) (newm *Method, err error) {
 
 // look up method in class and super classes
 func lookupSuperClassMethod(c *Class, name, desc string) (m *Method, err error) {
-	for cls := c.Super; cls != nil; cls = cls.Super {
+	for cls := c; cls != nil; cls = cls.Super {
 		for _, m = range cls.Methods {
 			// case1: method defined in Class c
 			// case2: method defined in SuperClass of c, but it is non-private
@@ -197,7 +197,9 @@ func lookupMaxSpecificMethod(iface *Class, name, desc string) (m *Method, err er
 			if m.IsPrivate() || m.IsStatic() || m.IsAbstract() {
 				continue
 			}
-			return
+			if m.Name == name && m.Desc == desc {
+				return
+			}
 		}
 	}
 	err = ErrorMethodNotFound
@@ -210,6 +212,9 @@ func lookupSuperInterfaceMethod(iface *Class, name, desc string) (m *Method, err
 		for _, m = range ifc.Methods {
 			if m.IsPrivate() || m.IsStatic() {
 				continue
+			}
+			if m.Name == name && m.Desc == desc {
+				return
 			}
 			return
 		}

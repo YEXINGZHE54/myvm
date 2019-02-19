@@ -45,6 +45,13 @@ func (s *Stack) Current() (f *Frame) {
 	return s.frames[len(s.frames)-1]
 }
 
+func (s *Stack) Caller() (f *Frame) {
+	if len(s.frames) < 2 {
+		return nil
+	}
+	return s.frames[len(s.frames)-2]
+}
+
 func (f *Frame) GetMethod() *reflect.Method {
 	return f.method
 }

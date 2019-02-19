@@ -2,6 +2,7 @@ package myvm.example;
 
 import java.lang.System;
 import java.lang.Object;
+import java.lang.Integer;
 
 public class HelloWorld {
     public static final int Val = 1;

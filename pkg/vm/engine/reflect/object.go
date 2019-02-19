@@ -58,7 +58,7 @@ func (o *Object) GetField(f *Field) (v interface{}) {
 }
 
 func (o *Object) GoString() string {
-	field, err := o.Class.GetInstanceField("value", "[C")
+	field, err := o.Class.LookupInstanceField("value", "[C")
 	if err != nil {
 		panic(err)
 	}
@@ -67,4 +67,43 @@ func (o *Object) GoString() string {
 		panic(err)
 	}
 	return utils.UTF16ToString(chars)
+}
+
+func (o *Object) Clone() *Object {
+	var data interface{}
+	switch v := o.fields.(type) {
+	case []int8:
+		arr := make([]int8, len(v))
+		copy(arr, v)
+		data = arr
+	case []int16:
+		arr := make([]int16, len(v))
+		copy(arr, v)
+		data = arr
+	case []uint16:
+		arr := make([]uint16, len(v))
+		copy(arr, v)
+		data = arr
+	case []int32:
+		arr := make([]int32, len(v))
+		copy(arr, v)
+		data = arr
+	case []int64:
+		arr := make([]int64, len(v))
+		copy(arr, v)
+		data = arr
+	case []*Object:
+		arr := make([]*Object, len(v))
+		copy(arr, v)
+		data = arr
+	case Slots:
+		arr := make(Slots, len(v))
+		copy(arr, v)
+		data = arr
+	}
+	return &Object{
+		data,
+		o.Class,
+		o.Extra,
+	}
 }

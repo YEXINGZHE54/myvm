@@ -26,6 +26,7 @@ func (i *PopInst) Fetch(coder *instructions.CodeReader) {
 }
 
 func (i *PopInst) Exec(f *stack.Frame) {
+	println("pop exec")
 	f.PopOpstackVal()
 }
 

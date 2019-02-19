@@ -32,7 +32,7 @@ func (i *ReturnInst) Fetch(coder *instructions.CodeReader) {
 }
 
 func (i *ReturnInst) Exec(f *stack.Frame) {
-	println("return exec")
+	println("return exec", f.GetMethod().Cls.Name, f.GetMethod().Name, f.GetMethod().Desc)
 	f.Stack.Pop()
 }
 
