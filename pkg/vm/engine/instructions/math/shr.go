@@ -1,6 +1,7 @@
 package math
 
 import (
+	"github.com/YEXINGZHE54/myvm/pkg/utils"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/instructions"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/memory/stack"
 )
@@ -23,6 +24,7 @@ func (i *iushrInst) Fetch(coder *instructions.CodeReader) {
 }
 
 func (i *iushrInst) Exec(f *stack.Frame) {
+	utils.Log("executing instruction iushr")
 	v2 := f.PopOpstackVal()
 	v1 := f.PopOpstackVal()
 	s := uint(v2 & 0x1F)

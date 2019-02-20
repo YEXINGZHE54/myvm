@@ -1,6 +1,7 @@
 package impl
 
 import (
+	"github.com/YEXINGZHE54/myvm/pkg/utils"
 	"github.com/YEXINGZHE54/myvm/pkg/vm"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/thread"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/reflect"
@@ -22,6 +23,7 @@ func NewVM(bootPath, classPath string) vm.VM {
 }
 
 func (vm *VMImpl) Startup(class string, args []string) (err error) {
+	utils.Log("staring up VM, max stack: %d, classname: %s, args: %v", 256, class, args)
 	t := thread.NewThread(256, vm, class, args)
 	return t.Run()
 }

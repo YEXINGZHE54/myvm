@@ -2,6 +2,7 @@ package classfile
 
 import (
 	"errors"
+	"github.com/YEXINGZHE54/myvm/pkg/utils"
 	"math"
 )
 
@@ -111,9 +112,7 @@ func (f *ClassFile) parseConstant(r *Reader) (consts []Constant, err error) {
 			r.read2()
 			r.read2()
 		default:
-			println("const type: ")
-			println(r.index)
-			println(tag)
+			utils.Log("const type: %d, %d", r.index, tag)
 			err = ErrorConst
 			return
 		}

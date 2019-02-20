@@ -1,6 +1,7 @@
 package objects
 
 import (
+	"github.com/YEXINGZHE54/myvm/pkg/utils"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/instructions"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/reflect"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/memory/stack"
@@ -29,9 +30,9 @@ func (i *GetStaticInst) Fetch(coder *instructions.CodeReader) {
 }
 
 func (i *GetStaticInst) Exec(f *stack.Frame) {
-	println("getstatic exec: ")
 	cls := f.GetMethod().Cls
 	ref := cls.Consts[i.idx].(*reflect.FieldRef)
+	utils.Log("executing instruction getstatic, %s.%s%s", ref.ClsName, ref.Name, ref.Desc)
 	err := cls.Loader.ResolveField(ref)
 	if err != nil {
 		panic(err)
@@ -68,9 +69,9 @@ func (i *PutStaticInst) Fetch(coder *instructions.CodeReader) {
 }
 
 func (i *PutStaticInst) Exec(f *stack.Frame) {
-	println("putstatic exec: ")
 	cls := f.GetMethod().Cls
 	ref := cls.Consts[i.idx].(*reflect.FieldRef)
+	utils.Log("executing instruction putstatic, %s.%s%s", ref.ClsName, ref.Name, ref.Desc)
 	err := cls.Loader.ResolveField(ref)
 	if err != nil {
 		panic(err)

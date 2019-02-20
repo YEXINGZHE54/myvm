@@ -1,6 +1,7 @@
 package array
 
 import (
+	"github.com/YEXINGZHE54/myvm/pkg/utils"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/instructions"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/reflect"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/memory/stack"
@@ -37,6 +38,7 @@ func (i *NewArrayInst) Fetch(coder *instructions.CodeReader) {
 }
 
 func (i *NewArrayInst) Exec(f *stack.Frame) {
+	utils.Log("executing instruction newarr")
 	var cname string
 	switch i.idx {
 	case ATYPE_BOOLEAN:
@@ -79,6 +81,7 @@ func (i *ANewArrayInst) Fetch(coder *instructions.CodeReader) {
 }
 
 func (i *ANewArrayInst) Exec(f *stack.Frame) {
+	utils.Log("executing instruction anewarr")
 	ref := f.GetMethod().Cls.Consts[i.idx].(*reflect.ClsRef)
 	err := f.GetMethod().Cls.Loader.ResolveClass(ref)
 	if err != nil {

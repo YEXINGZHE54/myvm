@@ -29,6 +29,7 @@ type (
 		StaticVars Slots
 		Started bool
 		ClsObj *Object
+		SourceFile string
 	}
 	Member struct {
 		Flag uint16
@@ -43,6 +44,7 @@ type (
 	}
 	Method struct {
 		Member
+		ExceptionTable []*ExceptionHandle
 		MaxStack int
 		MaxLocal int
 		Codes []byte
@@ -73,6 +75,12 @@ type (
 	MethodDescriptor struct {
 		Args []string
 		Return string
+	}
+	ExceptionHandle struct {
+		Start uint16
+		End uint16
+		Caught *ClsRef
+		HandlerPC uint16
 	}
 )
 

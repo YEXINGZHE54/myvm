@@ -1,6 +1,7 @@
 package array
 
 import (
+	"github.com/YEXINGZHE54/myvm/pkg/utils"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/instructions"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/memory/stack"
 )
@@ -23,6 +24,7 @@ func (i *IArrLoad) Fetch(coder *instructions.CodeReader) {
 }
 
 func (i *IArrLoad) Exec(f *stack.Frame) {
+	utils.Log("executing instruction iaload")
 	idx := int(f.PopOpstackVal())
 	arr := f.PopOpstackRef() // must be of type [I
 	f.PushOpstackVal(int32(arr.Ints()[idx]))

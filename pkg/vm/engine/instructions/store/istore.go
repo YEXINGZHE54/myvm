@@ -1,6 +1,7 @@
 package store
 
 import (
+	"github.com/YEXINGZHE54/myvm/pkg/utils"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/instructions"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/memory/stack"
 )
@@ -41,6 +42,7 @@ func (i *IStore) Fetch(coder *instructions.CodeReader) {
 }
 
 func (i *IStore) Exec(f *stack.Frame) {
+	utils.Log("executing instruction istore")
 	istore(f, i.idx-1)
 }
 

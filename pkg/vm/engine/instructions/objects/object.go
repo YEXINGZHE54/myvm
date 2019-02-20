@@ -1,6 +1,7 @@
 package objects
 
 import (
+	"github.com/YEXINGZHE54/myvm/pkg/utils"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/instructions"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/reflect"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/memory/stack"
@@ -33,9 +34,9 @@ func (i *NewInst) Fetch(coder *instructions.CodeReader) {
 }
 
 func (i *NewInst) Exec(f *stack.Frame) {
-	println("new op exec: ")
 	cls := f.GetMethod().Cls
 	ref := cls.Consts[i.idx].(*reflect.ClsRef)
+	utils.Log("executing instruction new, %s", ref.Name)
 	err := cls.Loader.ResolveClass(ref)
 	if err != nil {
 		panic(err)
@@ -65,9 +66,9 @@ func (i *GetInst) Fetch(coder *instructions.CodeReader) {
 }
 
 func (i *GetInst) Exec(f *stack.Frame) {
-	println("getfield exec: ")
 	cls := f.GetMethod().Cls
 	ref := cls.Consts[i.idx].(*reflect.FieldRef)
+	utils.Log("executing instruction getfield, %s.%s%s", ref.ClsName, ref.Name, ref.Desc)
 	err := cls.Loader.ResolveField(ref)
 	if err != nil {
 		panic(err)
@@ -96,9 +97,9 @@ func (i *PutInst) Fetch(coder *instructions.CodeReader) {
 }
 
 func (i *PutInst) Exec(f *stack.Frame) {
-	println("putfield exec: ")
 	cls := f.GetMethod().Cls
 	ref := cls.Consts[i.idx].(*reflect.FieldRef)
+	utils.Log("executing instruction putfield, %s.%s%s", ref.ClsName, ref.Name, ref.Desc)
 	err := cls.Loader.ResolveField(ref)
 	if err != nil {
 		panic(err)

@@ -10,4 +10,5 @@ import (
 	_ "github.com/YEXINGZHE54/myvm/pkg/vm/natives/sun/misc/vm"
 	_ "github.com/YEXINGZHE54/myvm/pkg/vm/natives/sun/misc/unsafe"
 	_ "github.com/YEXINGZHE54/myvm/pkg/vm/natives/reflect"
+	_ "github.com/YEXINGZHE54/myvm/pkg/vm/natives/throwable"
 )

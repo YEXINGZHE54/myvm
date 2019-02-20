@@ -1,6 +1,7 @@
 package branches
 
 import (
+	"github.com/YEXINGZHE54/myvm/pkg/utils"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/instructions"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/memory/stack"
 )
@@ -31,6 +32,7 @@ func (i *IfIcmpInst) Fetch(coder *instructions.CodeReader) {
 }
 
 func (i *IfIcmpInst) Exec(f *stack.Frame) {
+	utils.Log("executing instruction ifcmp")
 	v2 := f.PopOpstackVal()
 	v1 := f.PopOpstackVal()
 	if i.f(v1, v2) {

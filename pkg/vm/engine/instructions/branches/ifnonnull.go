@@ -1,6 +1,7 @@
 package branches
 
 import (
+	"github.com/YEXINGZHE54/myvm/pkg/utils"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/instructions"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/memory/stack"
 )
@@ -24,6 +25,7 @@ func (i *IfNonNullInst) Fetch(coder *instructions.CodeReader) {
 }
 
 func (i *IfNonNullInst) Exec(f *stack.Frame) {
+	utils.Log("executing instruction ifnonnull")
 	o := f.PopOpstackRef()
 	if o != nil {
 		gotoOffset(f, i.idx)

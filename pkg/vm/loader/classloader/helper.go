@@ -15,9 +15,6 @@ func FileToClass(cf *classfile.ClassFile) (c *reflect.Class, err error) {
 	for _, i := range cf.Ifaces{
 		c.InterfaceNames = append(c.InterfaceNames, cf.GetClass(i))
 	}
-	// member info
-	c.Fields = NewFields(c, cf)
-	c.Methods = NewMethods(c, cf)
 	// constants info
 	var v interface{}
 	var double bool
@@ -43,6 +40,16 @@ func FileToClass(cf *classfile.ClassFile) (c *reflect.Class, err error) {
 		//influnced by long/double, java ref index will increased, we must adapt to it
 		if double {
 			c.Consts = append(c.Consts, nil)
+		}
+	}
+	// member info
+	c.Fields = NewFields(c, cf)
+	c.Methods = NewMethods(c, cf)
+	// attr
+	c.SourceFile = "Unknown"
+	for _, attr := range cf.Attributes {
+		if attr.Name == "SourceFile" {
+			c.SourceFile = cf.GetUTF8(classfile.ToIdx(attr.Data))
 		}
 	}
 	return
@@ -103,6 +110,19 @@ func NewMethods(cls *reflect.Class, cf *classfile.ClassFile) (result []*reflect.
 					method.MaxStack = int(code.MaxStacks)
 					method.MaxLocal = int(code.MaxLocals)
 					method.Codes = code.Codes
+					method.ExceptionTable = make([]*reflect.ExceptionHandle, 0)
+					for _, excpt := range code.Exceptions {
+						var ref *reflect.ClsRef = nil
+						if excpt.CatchType > 0 {
+							ref = cls.Consts[excpt.CatchType].(*reflect.ClsRef)
+						}
+						method.ExceptionTable = append(method.ExceptionTable, &reflect.ExceptionHandle{
+							uint16(excpt.StartPC),
+							uint16(excpt.EndPC),
+							ref,
+							uint16(excpt.HandlePC),
+						})
+					}
 					break
 				}
 			}

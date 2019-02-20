@@ -102,3 +102,7 @@ func (f *Frame) PopOpstackSlot() reflect.Slot {
 func (f *Frame) GetOpstackSlot(idx int) reflect.Slot {
 	return f.opStack.slots[f.opStack.top-1-idx]
 }
+
+func (f *Frame) ClearOpstack() {
+	f.opStack.top = 0
+}

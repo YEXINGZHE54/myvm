@@ -1,6 +1,7 @@
 package objects
 
 import (
+	"github.com/YEXINGZHE54/myvm/pkg/utils"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/instructions"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/memory/stack"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/natives"
@@ -23,8 +24,8 @@ func (i *NativeInst) Fetch(coder *instructions.CodeReader) {
 }
 
 func (i *NativeInst) Exec(f *stack.Frame) {
-	println("invoke native")
 	m := f.GetMethod()
+	utils.Log("executing instruction invoke_native, %s.%s%s", m.Cls.Name, m.Name, m.Desc)
 	nativem, err := natives.LookUpNative(m.Cls.Name, m.Name, m.Desc)
 	if err != nil {
 		panic(err)

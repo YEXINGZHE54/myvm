@@ -1,6 +1,7 @@
 package instructions
 
 import (
+	"github.com/YEXINGZHE54/myvm/pkg/utils"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/memory/stack"
 )
 
@@ -23,8 +24,7 @@ func Register(opcode uint8, inst Inst) {
 func NewInst(opcode uint8) Inst {
 	ins := supported[opcode]
 	if ins == nil {
-		println("opcode not found: ")
-		println(opcode)
+		utils.Log("opcode not found: %d", opcode)
 		return nil
 	}
 	return ins.Clone()

@@ -52,6 +52,10 @@ func (s *Stack) Caller() (f *Frame) {
 	return s.frames[len(s.frames)-2]
 }
 
+func (s *Stack) Frames() []*Frame {
+	return s.frames
+}
+
 func (f *Frame) GetMethod() *reflect.Method {
 	return f.method
 }

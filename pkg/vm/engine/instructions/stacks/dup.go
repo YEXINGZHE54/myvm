@@ -1,6 +1,7 @@
 package stacks
 
 import (
+	"github.com/YEXINGZHE54/myvm/pkg/utils"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/instructions"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/memory/stack"
 )
@@ -26,7 +27,7 @@ func (i *DupInst) Fetch(coder *instructions.CodeReader) {
 }
 
 func (i *DupInst) Exec(f *stack.Frame) {
-	println("dup op exec")
+	utils.Log("executing instruction dup")
 	f.DupStack()
 }
 
@@ -39,7 +40,7 @@ func (i *Dupx1Inst) Fetch(coder *instructions.CodeReader) {
 }
 
 func (i *Dupx1Inst) Exec(f *stack.Frame) {
-	println("dupx1 op exec")
+	utils.Log("executing instruction dupx1")
 	v1 := f.PopOpstackSlot()
 	v2 := f.PopOpstackSlot()
 	f.PushOpstackSlot(v1)

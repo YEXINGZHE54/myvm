@@ -74,10 +74,10 @@ type (
 		Attributes []Attribute
 	}
 	ExceptionHandle struct {
-		start_pc u2
-		end_pc u2
-		handle_pc u2
-		catch_type u2
+		StartPC u2
+		EndPC u2
+		HandlePC u2
+		CatchType u2
 	}
 )
 

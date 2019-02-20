@@ -1,6 +1,7 @@
 package constants
 
 import (
+	"github.com/YEXINGZHE54/myvm/pkg/utils"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/instructions"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/memory/stack"
 )
@@ -28,6 +29,7 @@ func (i *BIPushInst) Fetch(coder *instructions.CodeReader) {
 }
 
 func (i *BIPushInst) Exec(f *stack.Frame) {
+	utils.Log("executing instruction bipush")
 	f.PushOpstackVal(int32(i.val))
 }
 
@@ -40,6 +42,7 @@ func (i *SIPushInst) Fetch(coder *instructions.CodeReader) {
 }
 
 func (i *SIPushInst) Exec(f *stack.Frame) {
+	utils.Log("executing instruction sipush")
 	f.PushOpstackVal(int32(i.val))
 }
 

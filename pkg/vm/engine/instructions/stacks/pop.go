@@ -1,6 +1,7 @@
 package stacks
 
 import (
+	"github.com/YEXINGZHE54/myvm/pkg/utils"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/instructions"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/memory/stack"
 )
@@ -26,7 +27,7 @@ func (i *PopInst) Fetch(coder *instructions.CodeReader) {
 }
 
 func (i *PopInst) Exec(f *stack.Frame) {
-	println("pop exec")
+	utils.Log("executing instruction pop")
 	f.PopOpstackVal()
 }
 
@@ -39,6 +40,7 @@ func (i *Pop2Inst) Fetch(coder *instructions.CodeReader) {
 }
 
 func (i *Pop2Inst) Exec(f *stack.Frame) {
+	utils.Log("executing instruction pop2")
 	f.PopOpstackVal()
 	f.PopOpstackVal()
 }

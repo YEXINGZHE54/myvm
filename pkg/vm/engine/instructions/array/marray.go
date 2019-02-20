@@ -1,6 +1,7 @@
 package array
 
 import (
+	"github.com/YEXINGZHE54/myvm/pkg/utils"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/instructions"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/reflect"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/memory/stack"
@@ -27,6 +28,7 @@ func (i *MultiArrayInst) Fetch(coder *instructions.CodeReader) {
 }
 
 func (i *MultiArrayInst) Exec(f *stack.Frame) {
+	utils.Log("executing instruction marray")
 	counts := make([]int, i.dim)
 	for idx := int(i.dim)-1; idx >= 0; idx = idx - 1 {
 		counts[idx] = int(f.PopOpstackVal())

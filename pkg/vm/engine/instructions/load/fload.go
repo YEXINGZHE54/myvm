@@ -1,6 +1,7 @@
 package load
 
 import (
+	"github.com/YEXINGZHE54/myvm/pkg/utils"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/instructions"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/memory/stack"
 )
@@ -41,6 +42,7 @@ func (i *FLoad) Fetch(coder *instructions.CodeReader) {
 }
 
 func (i *FLoad) Exec(f *stack.Frame) {
+	utils.Log("executing instruction fload")
 	fload(f, i.idx-1)
 }
 

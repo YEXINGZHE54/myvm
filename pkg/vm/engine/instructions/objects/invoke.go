@@ -1,6 +1,7 @@
 package objects
 
 import (
+	"github.com/YEXINGZHE54/myvm/pkg/utils"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/instructions"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/reflect"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/memory/stack"
@@ -37,9 +38,9 @@ func (i *InvokeVirtualInst) Fetch(coder *instructions.CodeReader) {
 }
 
 func (i *InvokeVirtualInst) Exec(f *stack.Frame) {
-	println("invoke virtual exec")
 	cls := f.GetMethod().Cls
 	ref := cls.Consts[i.idx].(*reflect.MethodRef)
+	utils.Log("executing instruction invoke_virtual, %s.%s%s", ref.ClsName, ref.Name, ref.Desc)
 	err := cls.Loader.ResolveMethod(ref)
 	if err != nil {
 		panic(err)
@@ -98,11 +99,11 @@ as if by execution of a monitorenter instruction (§monitorenter) in the current
 func (i *InvokeSpecialInst) Exec(f *stack.Frame) {
 	cls := f.GetMethod().Cls
 	ref := cls.Consts[i.idx].(*reflect.MethodRef)
+	utils.Log("executing instruction invoke_special, %s.%s%s", ref.ClsName, ref.Name, ref.Desc)
 	err := cls.Loader.ResolveMethod(ref)
 	if err != nil {
 		panic(err)
 	}
-	println("invoke special exec", ref.ClsName, ref.Name, ref.Desc)
 	// 1
 	m := ref.Ref
 	if m.IsProtected() &&
@@ -140,9 +141,9 @@ func (i *InvokeStaticInst) Fetch(coder *instructions.CodeReader) {
 }
 
 func (i *InvokeStaticInst) Exec(f *stack.Frame) {
-	println("invoke static exec")
 	cls := f.GetMethod().Cls
 	ref := cls.Consts[i.idx].(*reflect.MethodRef)
+	utils.Log("executing instruction invoke_static, %s.%s%s", ref.ClsName, ref.Name, ref.Desc)
 	err := cls.Loader.ResolveMethod(ref)
 	if err != nil {
 		panic(err)
@@ -176,12 +177,11 @@ func (i *InvokeInterfaceInst) Fetch(coder *instructions.CodeReader) {
 func (i *InvokeInterfaceInst) Exec(f *stack.Frame) {
 	cls := f.GetMethod().Cls
 	ref := cls.Consts[i.idx].(*reflect.MethodRef)
-	println("invoke interface exec", ref.ClsName, ref.Name, ref.Desc)
+	utils.Log("executing instruction invoke_interface, %s.%s%s", ref.ClsName, ref.Name, ref.Desc)
 	err := cls.Loader.ResolveIfaceMethod(ref)
 	if err != nil {
 		panic(err)
 	}
-	println("resolved interface method: ", ref.Ref.Cls.Name, ref.Ref.Name, ref.Ref.Desc)
 	if ref.Name == "<init>" || ref.Name == "<clinit>" {
 		panic("interface method could not be instance initialization method, nor class or interface initialization method")
 	}
@@ -190,7 +190,6 @@ func (i *InvokeInterfaceInst) Exec(f *stack.Frame) {
 	if err != nil {
 		panic(err)
 	}
-	println("invoking interface method: ", invokem.Cls.Name, invokem.Name, invokem.Desc)
 	invokeMethod(f, invokem)
 }
 

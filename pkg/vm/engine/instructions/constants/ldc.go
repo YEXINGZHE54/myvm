@@ -1,6 +1,7 @@
 package constants
 
 import (
+	"github.com/YEXINGZHE54/myvm/pkg/utils"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/instructions"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/reflect"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/loader/classfile"
@@ -34,7 +35,7 @@ func (i *LdcInst) Fetch(coder *instructions.CodeReader) {
 }
 
 func (i *LdcInst) Exec(f *stack.Frame) {
-	println("ldc exec")
+	utils.Log("executing instruction ldc")
 	ldc(f, int(i.idx))
 }
 
@@ -47,7 +48,7 @@ func (i *LdcwInst) Fetch(coder *instructions.CodeReader) {
 }
 
 func (i *LdcwInst) Exec(f *stack.Frame) {
-	println("ldcw exec")
+	utils.Log("executing instruction ldcw")
 	ldc(f, int(i.idx))
 }
 
@@ -60,7 +61,7 @@ func (i *Ldc2wInst) Fetch(coder *instructions.CodeReader) {
 }
 
 func (i *Ldc2wInst) Exec(f *stack.Frame) {
-	println("ldc2w exec")
+	utils.Log("executing instruction ldc2w")
 	ldc2(f, int(i.idx))
 }
 

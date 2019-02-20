@@ -1,6 +1,7 @@
 package array
 
 import (
+	"github.com/YEXINGZHE54/myvm/pkg/utils"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/instructions"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/memory/stack"
 )
@@ -26,6 +27,7 @@ func (i *IArrStore) Fetch(coder *instructions.CodeReader) {
 }
 
 func (i *IArrStore) Exec(f *stack.Frame) {
+	utils.Log("executing instruction iarrstore")
 	val := f.PopOpstackVal()
 	idx := int(f.PopOpstackVal())
 	arr := f.PopOpstackRef() // must be of type [I
@@ -41,6 +43,7 @@ func (i *CArrStore) Fetch(coder *instructions.CodeReader) {
 }
 
 func (i *CArrStore) Exec(f *stack.Frame) {
+	utils.Log("executing instruction carrstore")
 	val := f.PopOpstackVal()
 	idx := int(f.PopOpstackVal())
 	arr := f.PopOpstackRef() // must be of type [I

@@ -1,6 +1,7 @@
 package objects
 
 import (
+	"github.com/YEXINGZHE54/myvm/pkg/utils"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/instructions"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/memory/stack"
 )
@@ -32,7 +33,7 @@ func (i *ReturnInst) Fetch(coder *instructions.CodeReader) {
 }
 
 func (i *ReturnInst) Exec(f *stack.Frame) {
-	println("return exec", f.GetMethod().Cls.Name, f.GetMethod().Name, f.GetMethod().Desc)
+	utils.Log("executing instruction return, %s.%s%s", f.GetMethod().Cls.Name, f.GetMethod().Name, f.GetMethod().Desc)
 	f.Stack.Pop()
 }
 
@@ -45,7 +46,7 @@ func (i *IReturnInst) Fetch(coder *instructions.CodeReader) {
 }
 
 func (i *IReturnInst) Exec(f *stack.Frame) {
-	println("ireturn exec")
+	utils.Log("executing instruction ireturn, %s.%s%s", f.GetMethod().Cls.Name, f.GetMethod().Name, f.GetMethod().Desc)
 	top := f.Stack.Pop()
 	ret := f.Stack.Current()
 	ret.PushOpstackVal(top.PopOpstackVal())
@@ -60,7 +61,7 @@ func (i *LReturnInst) Fetch(coder *instructions.CodeReader) {
 }
 
 func (i *LReturnInst) Exec(f *stack.Frame) {
-	println("lreturn exec")
+	utils.Log("executing instruction lreturn, %s.%s%s", f.GetMethod().Cls.Name, f.GetMethod().Name, f.GetMethod().Desc)
 	top := f.Stack.Pop()
 	ret := f.Stack.Current()
 	ret.PushOpstackLong(top.PopOpstackLong())
@@ -75,7 +76,7 @@ func (i *FReturnInst) Fetch(coder *instructions.CodeReader) {
 }
 
 func (i *FReturnInst) Exec(f *stack.Frame) {
-	println("freturn exec")
+	utils.Log("executing instruction freturn, %s.%s%s", f.GetMethod().Cls.Name, f.GetMethod().Name, f.GetMethod().Desc)
 	top := f.Stack.Pop()
 	ret := f.Stack.Current()
 	ret.PushOpstackFloat(top.PopOpstackFloat())
@@ -90,7 +91,7 @@ func (i *DReturnInst) Fetch(coder *instructions.CodeReader) {
 }
 
 func (i *DReturnInst) Exec(f *stack.Frame) {
-	println("dreturn exec")
+	utils.Log("executing instruction dreturn, %s.%s%s", f.GetMethod().Cls.Name, f.GetMethod().Name, f.GetMethod().Desc)
 	top := f.Stack.Pop()
 	ret := f.Stack.Current()
 	ret.PushOpstackDouble(top.PopOpstackDouble())
@@ -105,7 +106,7 @@ func (i *AReturnInst) Fetch(coder *instructions.CodeReader) {
 }
 
 func (i *AReturnInst) Exec(f *stack.Frame) {
-	println("areturn exec")
+	utils.Log("executing instruction areturn, %s.%s%s", f.GetMethod().Cls.Name, f.GetMethod().Name, f.GetMethod().Desc)
 	top := f.Stack.Pop()
 	ret := f.Stack.Current()
 	ret.PushOpstackRef(top.PopOpstackRef())

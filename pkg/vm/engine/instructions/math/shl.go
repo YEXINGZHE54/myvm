@@ -1,6 +1,7 @@
 package math
 
 import (
+	"github.com/YEXINGZHE54/myvm/pkg/utils"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/instructions"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/memory/stack"
 )
@@ -23,6 +24,7 @@ func (i *lshlInst) Fetch(coder *instructions.CodeReader) {
 }
 
 func (i *lshlInst) Exec(f *stack.Frame) {
+	utils.Log("executing instruction lshl")
 	v2 := f.PopOpstackVal()
 	v1 := f.PopOpstackLong()
 	shift := uint(v2 & 0x3F)

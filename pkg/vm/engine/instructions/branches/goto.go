@@ -1,6 +1,7 @@
 package branches
 
 import (
+	"github.com/YEXINGZHE54/myvm/pkg/utils"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/instructions"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/thread"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/memory/stack"
@@ -29,6 +30,7 @@ func (i *GotoInst) Exec(f *stack.Frame) {
 }
 
 func gotoOffset(f *stack.Frame, offset int16)  {
+	utils.Log("executing instruction goto")
 	t := f.Stack.Thread().(*thread.Thread)
 	nextpc := t.GetPC() + int(offset)
 	f.SetPC(nextpc)
