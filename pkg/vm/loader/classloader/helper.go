@@ -123,6 +123,16 @@ func NewMethods(cls *reflect.Class, cf *classfile.ClassFile) (result []*reflect.
 							uint16(excpt.HandlePC),
 						})
 					}
+					for _, a := range code.Attributes {
+						if a.Name == "LineNumberTable" {
+							linetable := a.Data.([]classfile.LineNumber)
+							method.LineTable = make([]reflect.PCLine, len(linetable))
+							for idx, lt := range linetable {
+								method.LineTable[idx].PC = int(lt.PC)
+								method.LineTable[idx].Number = int(lt.Line)
+							}
+						}
+					}
 					break
 				}
 			}

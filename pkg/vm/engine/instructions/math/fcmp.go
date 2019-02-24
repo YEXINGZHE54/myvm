@@ -27,8 +27,8 @@ func (i *FcmpInst) Fetch(coder *instructions.CodeReader)  {
 
 func (i *FcmpInst) Exec(f *stack.Frame) {
 	utils.Log("executing instruction fcmp")
-	v2 := float32(f.PopOpstackVal())
-	v1 := float32(f.PopOpstackVal())
+	v2 := f.PopOpstackFloat()
+	v1 := f.PopOpstackFloat()
 	if v1 > v2 {
 		f.PushOpstackVal(1)
 	} else if v1 == v2 {

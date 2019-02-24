@@ -7,7 +7,7 @@ import (
 )
 
 func longBitsToDouble(f *stack.Frame)  {
-	v1 := f.GetLocalVal(0)
+	v1 := f.GetLocalLong(0)
 	f.PushOpstackDouble(math.Float64frombits(uint64(v1)))
 }
 

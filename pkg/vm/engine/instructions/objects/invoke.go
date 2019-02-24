@@ -48,26 +48,7 @@ func (i *InvokeVirtualInst) Exec(f *stack.Frame) {
 	if ref.Name == "<init>" || ref.Name == "<clinit>" {
 		panic("virtual method could not be instance initialization method, nor class or interface initialization method")
 	}
-	obj := f.GetOpstackSlot(ref.Ref.ArgSlot-1).Ref
-	//TODO: for System.out, it's registered natives, so System.out.println may results in nullException
-	if ref.Name == "println" && ref.Desc[len(ref.Desc)-1] == 'V' { //void function, just print them
-		for idx := 0; idx < ref.Ref.ArgSlot-1; idx = idx + 1 {
-			slot := f.PopOpstackSlot()
-			if slot.Ref == nil {
-				println(slot.Val)
-			} else {
-				switch slot.Ref.Class.Name {
-				case "java/lang/String":
-					println(slot.Ref.GoString())
-				default:
-					println(slot.Ref.Class.Name, slot.Ref)
-				}
-			}
-		}
-		// pop System.out
-		f.PopOpstackSlot()
-		return
-	}
+	obj := f.GetOpstackSlot(ref.Ref.ArgSlot-1).(*reflect.Object)
 	invokem, err := obj.Class.LookupVirtualMethod(ref.Ref)
 	if err != nil {
 		panic(err)
@@ -105,12 +86,15 @@ func (i *InvokeSpecialInst) Exec(f *stack.Frame) {
 		panic(err)
 	}
 	// 1
+	obj := f.GetOpstackSlot(ref.Ref.ArgSlot-1).(*reflect.Object)
 	m := ref.Ref
 	if m.IsProtected() &&
 		m.Cls.IsSuperOf(cls) &&
 		m.Cls.GetPackageName() != cls.GetPackageName() &&
-		m.Cls != cls &&
-		!cls.IsSuperOf(m.Cls) {
+		obj.Class != cls &&
+		!cls.IsSuperOf(obj.Class) {
+		println(m.Cls.Name, m.Name, m.Desc, cls.Name)
+		println(m.IsProtected(), m.Cls.IsSuperOf(cls), m.Cls.GetPackageName() != cls.GetPackageName(), m.Cls != cls, !cls.IsSuperOf(m.Cls))
 		panic("protected method class must be a subclass of current class")
 	}
 	// 2.1
@@ -185,7 +169,7 @@ func (i *InvokeInterfaceInst) Exec(f *stack.Frame) {
 	if ref.Name == "<init>" || ref.Name == "<clinit>" {
 		panic("interface method could not be instance initialization method, nor class or interface initialization method")
 	}
-	obj := f.GetOpstackSlot(ref.Ref.ArgSlot-1).Ref
+	obj := f.GetOpstackSlot(ref.Ref.ArgSlot-1).(*reflect.Object)
 	invokem, err := obj.Class.LookupVirtualMethod(ref.Ref)
 	if err != nil {
 		panic(err)

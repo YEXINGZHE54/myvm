@@ -8,7 +8,11 @@ import (
 func intern(f *stack.Frame)  {
 	loader := f.GetMethod().Cls.Loader
 	this := f.GetLocalRef(0)
-	loader.JString(this.GoString())
+	o, err := loader.JString(this.GoString())
+	if err != nil {
+		panic(err)
+	}
+	f.PushOpstackRef(o)
 }
 
 func init()  {

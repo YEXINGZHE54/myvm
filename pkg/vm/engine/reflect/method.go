@@ -37,6 +37,14 @@ func (m *Method) ParseSignature() (md *MethodDescriptor, err error) {
 	return
 }
 
+func (c *Class) GetContructors(public bool) (methods []*Method) {
+	for _, m := range c.Methods {
+		if m.Name == "<init>" && (public && m.IsPublic()) {
+			methods = append(methods, m)
+		}
+	}
+	return
+}
 
 func (c *Class) GetStatic(name, desc string) (m *Method, err error) {
 	return lookupCurrent(c, name, desc)
@@ -174,6 +182,21 @@ func (c *Class) LookupVirtualMethod(m *Method) (newm *Method, err error) {
 	return
 }
 
+func (m *Method) GetLineNumber(pc int) int {
+	if m.IsNative() {
+		return -2
+	}
+	line := -1
+	for i := len(m.LineTable)-1; i >= 0; i = i - 1 {
+		l := m.LineTable[i]
+		if pc >= l.PC {
+			line = l.Number
+			break
+		}
+	}
+	return line
+}
+
 // look up method in class and super classes
 func lookupSuperClassMethod(c *Class, name, desc string) (m *Method, err error) {
 	for cls := c; cls != nil; cls = cls.Super {
@@ -244,20 +267,23 @@ func parseSignature(sig string) (d *MethodDescriptor, err error) {
 		return
 	}
 	idx = idx + 1
+	last := idx
 	// parse args
 	args:
 	for ; idx < l; idx = idx + 1 {
 		switch sig[idx] {
 		case 'B','C','D','F','I','J','S','Z':
-			d.Args = append(d.Args, string(sig[idx]))
+			d.Args = append(d.Args, sig[last:idx+1])
+			last = idx + 1
 		case 'L':
 			next := strings.Index(sig[idx:], ";")
 			if next < 0 {
 				err = ErrorBadMethodDescriptor
 				return
 			}
-			d.Args = append(d.Args, sig[idx:idx+next+1])
+			d.Args = append(d.Args, sig[last:idx+next+1])
 			idx = idx + next
+			last = idx + 1
 		case '[':
 			continue
 		case ')': //end of args detected, break args loop
@@ -273,18 +299,19 @@ func parseSignature(sig string) (d *MethodDescriptor, err error) {
 		return
 	}
 	idx = idx + 1
+	last = idx
 	// parse return
 	for ; idx < l; idx = idx + 1 {
 		switch sig[idx] {
 		case 'B','C','D','F','I','J','S','Z','V':
-			d.Return = string(sig[idx])
+			d.Return = sig[last:idx+1]
 		case 'L':
 			next := strings.Index(sig[idx:], ";")
 			if next < 0 {
 				err = ErrorBadMethodDescriptor
 				return
 			}
-			d.Return = sig[idx:idx+next+1]
+			d.Return = sig[last:idx+next+1]
 			idx = idx + next
 		case '[':
 			continue

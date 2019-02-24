@@ -47,8 +47,7 @@ func (i *FStore) Exec(f *stack.Frame) {
 }
 
 func fstore(f *stack.Frame, idx int)  {
-	val := f.PopOpstackFloat()
-	f.SetLocalVal(idx, int32(val))
+	f.SetLocalFloat(idx, f.PopOpstackFloat())
 }
 
 func init() {

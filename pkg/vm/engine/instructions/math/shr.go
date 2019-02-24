@@ -8,10 +8,13 @@ import (
 
 const (
 	iushr_op = 0x7c
+	ishr_op = 0x7a
 )
 
 type (
 	iushrInst struct {
+	}
+	ishrInst struct {
 	}
 )
 
@@ -35,6 +38,23 @@ func (i *iushrInst) Exec(f *stack.Frame) {
 	}
 }
 
+func (i *ishrInst) Clone() instructions.Inst {
+	return i
+}
+
+func (i *ishrInst) Fetch(coder *instructions.CodeReader) {
+
+}
+
+func (i *ishrInst) Exec(f *stack.Frame) {
+	utils.Log("executing instruction ishr")
+	v2 := f.PopOpstackVal()
+	v1 := f.PopOpstackVal()
+	s := uint(v2 & 0x1F)
+	f.PushOpstackVal(v1 >> s)
+}
+
 func init()  {
 	instructions.Register(iushr_op, &iushrInst{})
+	instructions.Register(ishr_op, &ishrInst{})
 }

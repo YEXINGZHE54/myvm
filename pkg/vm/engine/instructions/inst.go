@@ -30,6 +30,21 @@ func NewInst(opcode uint8) Inst {
 	return ins.Clone()
 }
 
+func ReadAll(codes []byte) (val []Inst) {
+	coder := NewCodeReader(codes)
+	for pc := 0; pc < len(codes); {
+		code := coder.Read1()
+		v := NewInst(code)
+		if v == nil {
+			return
+		}
+		v.Fetch(coder)
+		pc = coder.GetPC()
+		val = append(val, v)
+	}
+	return
+}
+
 func init() {
 	supported = make(map[uint8] Inst)
 }

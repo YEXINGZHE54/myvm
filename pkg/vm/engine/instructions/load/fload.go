@@ -47,7 +47,7 @@ func (i *FLoad) Exec(f *stack.Frame) {
 }
 
 func fload(f *stack.Frame, idx int)  {
-	f.PushOpstackVal(f.GetLocalVal(idx))
+	f.PushOpstackFloat(f.GetLocalFloat(idx))
 }
 
 func init() {

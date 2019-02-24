@@ -28,7 +28,7 @@ func (i *PopInst) Fetch(coder *instructions.CodeReader) {
 
 func (i *PopInst) Exec(f *stack.Frame) {
 	utils.Log("executing instruction pop")
-	f.PopOpstackVal()
+	f.PopOpstackSlot()
 }
 
 func (i *Pop2Inst) Clone() instructions.Inst {
@@ -41,8 +41,8 @@ func (i *Pop2Inst) Fetch(coder *instructions.CodeReader) {
 
 func (i *Pop2Inst) Exec(f *stack.Frame) {
 	utils.Log("executing instruction pop2")
-	f.PopOpstackVal()
-	f.PopOpstackVal()
+	f.PopOpstackSlot()
+	f.PopOpstackSlot()
 }
 
 func init()  {

@@ -45,6 +45,7 @@ type (
 	Method struct {
 		Member
 		ExceptionTable []*ExceptionHandle
+		LineTable []PCLine
 		MaxStack int
 		MaxLocal int
 		Codes []byte
@@ -68,10 +69,7 @@ type (
 		Ref *Method
 	}
 	Slots []Slot
-	Slot struct {
-		Val int32
-		Ref *Object
-	}
+	Slot interface {}
 	MethodDescriptor struct {
 		Args []string
 		Return string
@@ -81,6 +79,10 @@ type (
 		End uint16
 		Caught *ClsRef
 		HandlerPC uint16
+	}
+	PCLine struct {
+		PC int
+		Number int
 	}
 )
 

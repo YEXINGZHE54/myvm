@@ -27,7 +27,7 @@ func (i *CheckcastInst) Fetch(coder *instructions.CodeReader)  {
 
 func (i *CheckcastInst) Exec(f *stack.Frame)  {
 	utils.Log("executing instruction checkcast")
-	obj := f.GetOpstackSlot(0).Ref
+	obj := f.GetOpstackSlot(0).(*reflect.Object)
 	if obj == nil {
 		return
 	}

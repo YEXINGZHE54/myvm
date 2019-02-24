@@ -62,8 +62,7 @@ func (i *DConst0Inst) Fetch(coder *instructions.CodeReader) {
 }
 
 func (i *DConst0Inst) Exec(f *stack.Frame) {
-	f.PushOpstackVal(0)
-	f.PushOpstackVal(0) // just a slot
+	f.PushOpstackDouble(0)
 }
 
 func (i *DConst1Inst) Clone() instructions.Inst {
@@ -75,8 +74,7 @@ func (i *DConst1Inst) Fetch(coder *instructions.CodeReader) {
 }
 
 func (i *DConst1Inst) Exec(f *stack.Frame) {
-	f.PushOpstackVal(1)
-	f.PushOpstackVal(1) // just a alot
+	f.PushOpstackDouble(1)
 }
 
 func (i *FConst0Inst) Clone() instructions.Inst {
@@ -88,7 +86,7 @@ func (i *FConst0Inst) Fetch(coder *instructions.CodeReader) {
 }
 
 func (i *FConst0Inst) Exec(f *stack.Frame) {
-	f.PushOpstackVal(0)
+	f.PushOpstackFloat(0)
 }
 
 func (i *FConst1Inst) Clone() instructions.Inst {
@@ -100,7 +98,7 @@ func (i *FConst1Inst) Fetch(coder *instructions.CodeReader) {
 }
 
 func (i *FConst1Inst) Exec(f *stack.Frame) {
-	f.PushOpstackVal(1)
+	f.PushOpstackFloat(1)
 }
 
 func (i *FConst2Inst) Clone() instructions.Inst {
@@ -112,7 +110,7 @@ func (i *FConst2Inst) Fetch(coder *instructions.CodeReader) {
 }
 
 func (i *FConst2Inst) Exec(f *stack.Frame) {
-	f.PushOpstackVal(2)
+	f.PushOpstackFloat(2)
 }
 
 func (i *IConstM1Inst) Clone() instructions.Inst {
@@ -208,8 +206,7 @@ func (i *LConst0Inst) Fetch(coder *instructions.CodeReader) {
 }
 
 func (i *LConst0Inst) Exec(f *stack.Frame) {
-	f.PushOpstackVal(0)
-	f.PushOpstackVal(0) // just slot
+	f.PushOpstackLong(0)
 }
 
 func (i *LConst1Inst) Clone() instructions.Inst {
@@ -221,8 +218,7 @@ func (i *LConst1Inst) Fetch(coder *instructions.CodeReader) {
 }
 
 func (i *LConst1Inst) Exec(f *stack.Frame) {
-	f.PushOpstackVal(1)
-	f.PushOpstackVal(1) // just slot
+	f.PushOpstackLong(1)
 }
 
 func init() {

@@ -29,7 +29,7 @@ func fillInStackTrace(f *stack.Frame)  {
 			FileName: m.Cls.SourceFile,
 			ClassName: m.Cls.Name,
 			MethodName: m.Name,
-			Line: 0,
+			Line: m.GetLineNumber(frames[idx].GetPC()-1),
 		})
 	}
 	this.Extra = traces

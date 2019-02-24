@@ -36,6 +36,10 @@ func (f *Field) IsLongDouble() bool {
 	return f.Desc == "J" || f.Desc == "D"
 }
 
+func (f *Field) IsPublic() bool {
+	return f.Flag & ACCESS_PUBLIC > 0
+}
+
 func (m *Method) IsPrivate() bool {
 	return m.Flag & ACCESS_PRIVATE > 0
 }
@@ -52,6 +56,10 @@ func (m *Method) IsProtected() bool {
 	return m.Flag & ACCESS_PROTECTED > 0
 }
 
+func (m *Method) IsPublic() bool {
+	return m.Flag & ACCESS_PUBLIC > 0
+}
+
 func (m *Method) IsNative() bool {
 	return m.Flag & ACCESS_NATIVE > 0
 }
@@ -59,23 +67,14 @@ func (m *Method) IsNative() bool {
 func init()  {
 	prims := []string{
 		"void",
-		"java/lang/Void",
 		"boolean",
-		"java/lang/Boolean",
 		"byte",
-		"java/lang/Byte",
 		"char",
-		"java/lang/Character",
 		"short",
-		"java/lang/Short",
 		"int",
-		"java/lang/Integer",
 		"long",
-		"java/lang/Long",
 		"float",
-		"java/lang/Float",
 		"double",
-		"java/lang/Double",
 	}
 	for _, p := range prims {
 		primitives[p] = true

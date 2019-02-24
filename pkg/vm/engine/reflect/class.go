@@ -2,11 +2,13 @@ package reflect
 
 import (
 	"errors"
+	"fmt"
 	"strings"
 )
 
 var (
 	ErrorFieldNotFound = errors.New("field not found")
+	ErrorInvalidClassDesc = errors.New("invalid class descriptor")
 )
 
 func (c *Class) GetMain() (m *Method, err error) {
@@ -47,8 +49,16 @@ func (c *Class) ComponentClass() (cls *Class, err error) {
 		err = ErrorInvalidArrayClassName
 		return
 	}
-	var cname string
-	switch name[1] {
+	cname, err := ConvertDescToClassName(name[1:])
+	if err != nil {
+		return
+	}
+	cls, err = c.Loader.LoadClass(cname)
+	return
+}
+
+func ConvertDescToClassName(desc string) (cname string, err error) {
+	switch desc[0] {
 	case 'Z':
 		cname = "boolean"
 	case 'B':
@@ -66,14 +76,12 @@ func (c *Class) ComponentClass() (cls *Class, err error) {
 	case 'D':
 		cname = "double"
 	case 'L': //refs
-		cname = name[2:len(name)-1]
-	case '[': //multi array
-		cname = name[1:]
+		cname = desc[1:len(desc)-1]
+	case '[': //array
+		cname = desc
 	default:
-		err = ErrorInvalidArrayClassName
-		return
+		err = ErrorInvalidClassDesc
 	}
-	cls, err = c.Loader.LoadClass(cname)
 	return
 }
 
@@ -100,9 +108,11 @@ func (c *Class) Implements(iface *Class) bool {
 }
 
 func (c *Class) LookupInstanceField(name, desc string) (f *Field, err error) {
-	for _, f = range c.Fields {
-		if f.Name == name && f.Desc == desc && !f.IsStatic() {
-			return
+	for cls := c; cls != nil; cls = cls.Super {
+		for _, f = range cls.Fields {
+			if f.Name == name && f.Desc == desc && !f.IsStatic() {
+				return
+			}
 		}
 	}
 	err = ErrorFieldNotFound
@@ -120,13 +130,7 @@ func (c *Class) LookupStaticField(name, desc string) (f *Field, err error) {
 }
 
 func (c *Class) GetField(f *Field) interface{} {
-	slot := c.StaticVars[f.SlotId]
-	switch f.Desc[0] {
-	case 'L','[':
-		return slot.Ref
-	default:
-		return slot.Val
-	}
+	return c.StaticVars[f.SlotId]
 }
 
 /* JVM SE8, checkcast
@@ -180,4 +184,22 @@ func CanCastTo(S, T *Class) bool {
 		return CanCastTo(sc, tc)
 	}
 	return false
+}
+
+// only accept: int32, int64, float32, float64, *Object
+func (c *Class) SetField(f *Field, val interface{}) {
+	switch v := val.(type) {
+	case int32:
+		c.StaticVars.SetVal(f.SlotId, v)
+	case float32:
+		c.StaticVars.SetFloat(f.SlotId, v)
+	case int64:
+		c.StaticVars.SetLong(f.SlotId, v)
+	case float64:
+		c.StaticVars.SetDouble(f.SlotId, v)
+	case *Object:
+		c.StaticVars.SetRef(f.SlotId, v)
+	default:
+		panic(fmt.Sprintf("unexpected type %T", val))
+	}
 }

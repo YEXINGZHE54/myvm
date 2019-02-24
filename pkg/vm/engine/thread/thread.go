@@ -2,8 +2,11 @@ package thread
 
 import (
 	"fmt"
+	"github.com/YEXINGZHE54/myvm/pkg/utils"
 	myvm "github.com/YEXINGZHE54/myvm/pkg/vm"
+	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/instructions"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/memory/stack"
+	"github.com/kr/pretty"
 )
 
 func NewThread(max int, vm myvm.VM, class string, args []string) *Thread {
@@ -42,6 +45,9 @@ func (t *Thread) Dump() {
 	for st.Current() != nil {
 		f := st.Pop()
 		m := f.GetMethod()
-		fmt.Printf(">> pc:%4d %v.%v%v \n", f.GetPC(), m.Cls.Name, m.Name, m.Desc)
+		fmt.Printf(">> pc:%4d Line: %4d %v.%v%v \n", f.GetPC(), m.GetLineNumber(f.GetPC()-1), m.Cls.Name, m.Name, m.Desc)
+		if utils.TracingEnabled() {
+			pretty.Println("instructions: ", instructions.ReadAll(m.Codes[:f.GetPC()]))
+		}
 	}
 }

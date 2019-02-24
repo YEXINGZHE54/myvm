@@ -20,6 +20,30 @@ func (f *Frame) GetLocalVal(idx int) int32 {
 	return f.localVars.GetVal(idx)
 }
 
+func (f *Frame) SetLocalFloat(idx int, val float32) {
+	f.localVars.SetFloat(idx, val)
+}
+
+func (f *Frame) GetLocalFloat(idx int) float32 {
+	return f.localVars.GetFloat(idx)
+}
+
+func (f *Frame) SetLocalLong(idx int, val int64) {
+	f.localVars.SetLong(idx, val)
+}
+
+func (f *Frame) GetLocalLong(idx int) int64 {
+	return f.localVars.GetLong(idx)
+}
+
+func (f *Frame) SetLocalDouble(idx int, val float64) {
+	f.localVars.SetDouble(idx, val)
+}
+
+func (f *Frame) GetLocalDouble(idx int) float64 {
+	return f.localVars.GetDouble(idx)
+}
+
 func (f *Frame) SetLocalRef(idx int, ref *reflect.Object) {
 	f.localVars.SetRef(idx, ref)
 }
@@ -83,8 +107,7 @@ func (f *Frame) PopOpstackRef() *reflect.Object {
 }
 
 func (f *Frame) PushOpstackSlot(s reflect.Slot) {
-	f.opStack.slots.SetVal(f.opStack.top, s.Val)
-	f.opStack.slots.SetRef(f.opStack.top, s.Ref)
+	f.opStack.slots[f.opStack.top] = s
 	f.opStack.top = f.opStack.top + 1
 }
 
@@ -101,6 +124,16 @@ func (f *Frame) PopOpstackSlot() reflect.Slot {
 
 func (f *Frame) GetOpstackSlot(idx int) reflect.Slot {
 	return f.opStack.slots[f.opStack.top-1-idx]
+}
+
+func (f *Frame) ExtendStack(pos int) {
+	for i := 0; i < pos; i = i + 1 {
+		f.opStack.slots = append(f.opStack.slots, nil)
+	}
+}
+
+func (f *Frame) This() *reflect.Object {
+	return f.localVars[0].(*reflect.Object)
 }
 
 func (f *Frame) ClearOpstack() {

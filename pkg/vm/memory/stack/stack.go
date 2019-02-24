@@ -46,10 +46,17 @@ func (s *Stack) Current() (f *Frame) {
 }
 
 func (s *Stack) Caller() (f *Frame) {
-	if len(s.frames) < 2 {
+	// stack is:
+	// [
+	// ...
+	// frame of real caller,
+	// frame of caller of sun/reflect/Reflection.getCallerClass,
+	// frame of sun/reflect/Reflection.getCallerClass
+	// ]
+	if len(s.frames) < 3 {
 		return nil
 	}
-	return s.frames[len(s.frames)-2]
+	return s.frames[len(s.frames)-3]
 }
 
 func (s *Stack) Frames() []*Frame {

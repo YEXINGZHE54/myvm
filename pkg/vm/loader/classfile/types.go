@@ -56,8 +56,8 @@ type (
 	}
 	// attr types
 	LineNumber struct {
-		pc u2
-		line u2
+		PC u2
+		Line u2
 	}
 	LocalVariable struct {
 		pc u2

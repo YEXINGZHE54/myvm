@@ -7,7 +7,7 @@ import (
 )
 
 func floatToRawIntBits(f *stack.Frame)  {
-	v := int32(math.Float32bits(float32(f.GetLocalVal(0))))
+	v := int32(math.Float32bits(f.GetLocalFloat(0)))
 	f.PushOpstackVal(v)
 }
 

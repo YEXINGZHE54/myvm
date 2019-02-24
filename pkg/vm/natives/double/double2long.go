@@ -7,7 +7,7 @@ import (
 )
 
 func doubleToRawLongBits(f *stack.Frame)  {
-	v := int64(math.Float64bits(float64(f.GetLocalVal(0))))
+	v := int64(math.Float64bits(f.GetLocalDouble(0)))
 	f.PushOpstackLong(v)
 }
 

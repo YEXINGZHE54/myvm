@@ -2,6 +2,7 @@ package reflect
 
 import (
 	"errors"
+	"fmt"
 	"github.com/YEXINGZHE54/myvm/pkg/utils"
 )
 
@@ -42,19 +43,14 @@ func (o *Object) SetField(f *Field, val interface{}) {
 		o.Fields().SetDouble(f.SlotId, v)
 	case *Object:
 		o.Fields().SetRef(f.SlotId, v)
+	default:
+		panic(fmt.Sprintf("unexpected type %T", val))
 	}
 }
 
 // only accept: int32, int64, float32, float64, *Object
 func (o *Object) GetField(f *Field) (v interface{}) {
-	slot := o.Fields()[f.SlotId]
-	switch f.Desc[0] {
-	case 'L','[':
-		v = slot.Ref
-	default:
-		v = slot.Val
-	}
-	return
+	return o.Fields()[f.SlotId]
 }
 
 func (o *Object) GoString() string {

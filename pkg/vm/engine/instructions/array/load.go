@@ -27,7 +27,7 @@ func (i *IArrLoad) Exec(f *stack.Frame) {
 	utils.Log("executing instruction iaload")
 	idx := int(f.PopOpstackVal())
 	arr := f.PopOpstackRef() // must be of type [I
-	f.PushOpstackVal(int32(arr.Ints()[idx]))
+	f.PushOpstackVal(arr.Ints()[idx])
 }
 
 func init() {
