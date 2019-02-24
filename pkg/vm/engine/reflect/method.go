@@ -39,7 +39,10 @@ func (m *Method) ParseSignature() (md *MethodDescriptor, err error) {
 
 func (c *Class) GetContructors(public bool) (methods []*Method) {
 	for _, m := range c.Methods {
-		if m.Name == "<init>" && (public && m.IsPublic()) {
+		if public && !m.IsPublic() {
+			continue
+		}
+		if m.Name == "<init>" {
 			methods = append(methods, m)
 		}
 	}

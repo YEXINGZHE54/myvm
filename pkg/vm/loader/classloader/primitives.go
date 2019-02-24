@@ -38,6 +38,8 @@ func (l *loader) loadPrims() (err error) {
 			return
 		}
 		c.ClsObj.Extra = c
+		// sets up loader
+		setupLoader(ccls, c.ClsObj, l)
 		l.classes[cname] = c
 	}
 	return

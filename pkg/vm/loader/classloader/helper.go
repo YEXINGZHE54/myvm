@@ -189,3 +189,11 @@ func convertInt64(i interface{}) (v int64) {
 	}
 	return
 }
+
+func setupLoader(ccls *reflect.Class, clsobj *reflect.Object, l *loader) {
+	field, err := ccls.LookupInstanceField("classLoader", "Ljava/lang/ClassLoader;")
+	if err != nil {
+		panic(err)
+	}
+	clsobj.SetField(field, l.jObj)
+}

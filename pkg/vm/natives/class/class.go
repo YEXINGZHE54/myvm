@@ -46,7 +46,7 @@ func fillContructor(ctor *reflect.Method, o *reflect.Object)  {
 		case "clazz":
 			o.SetField(f, ctor.Cls.ToObject())
 		case "slot":
-			o.SetField(f, 0)
+			o.SetField(f, int32(0))
 		case "parameterTypes":
 			var types []*reflect.Object
 			md, err := ctor.ParseSignature()
@@ -97,8 +97,15 @@ func fillContructor(ctor *reflect.Method, o *reflect.Object)  {
 			o.SetField(f, sig)
 		}
 	}
+	o.Extra = ctor // save method; read carefully, because of Pattern of Copy Accessor
+}
+
+func getModifiers(f *stack.Frame)  {
+	this := f.This().Extra.(*reflect.Class)
+	f.PushOpstackVal(int32(this.Flag))
 }
 
 func init()  {
 	natives.Register("java/lang/Class", "getDeclaredConstructors0", "(Z)[Ljava/lang/reflect/Constructor;", getDeclaredConstructors0)
+	natives.Register("java/lang/Class", "getModifiers", "()I", getModifiers)
 }

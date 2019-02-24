@@ -28,7 +28,7 @@ func (i *IfNullInst) Exec(f *stack.Frame) {
 	utils.Log("executing instruction ifnull")
 	o := f.PopOpstackRef()
 	if o == nil {
-		gotoOffset(f, i.idx)
+		gotoOffset(f, int(i.idx))
 	}
 }
 

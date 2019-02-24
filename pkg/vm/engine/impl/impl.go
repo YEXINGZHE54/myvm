@@ -24,12 +24,8 @@ func NewVM(bootPath, classPath string) vm.VM {
 
 func (vm *VMImpl) Startup(class string, args []string) (err error) {
 	utils.Log("staring up VM, max stack: %d, classname: %s, args: %v", 256, class, args)
-	t := thread.NewThread(256, vm, class, args)
+	t := thread.NewThread(256, vm.ld, vm, class, args)
 	return t.Run()
-}
-
-func (vm *VMImpl) LoadClass(class string) (cf *reflect.Class, err error) {
-	return vm.ld.LoadClass(class)
 }
 
 func init() {

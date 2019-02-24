@@ -33,7 +33,7 @@ func (i *IfAcmpInst) Exec(f *stack.Frame) {
 	v2 := f.PopOpstackRef()
 	v1 := f.PopOpstackRef()
 	if i.f(v1, v2) {
-		gotoOffset(f, i.idx)
+		gotoOffset(f, int(i.idx))
 	}
 }
 

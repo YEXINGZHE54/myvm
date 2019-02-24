@@ -26,10 +26,10 @@ func (i *GotoInst) Fetch(coder *instructions.CodeReader) {
 }
 
 func (i *GotoInst) Exec(f *stack.Frame) {
-	gotoOffset(f, i.idx)
+	gotoOffset(f, int(i.idx))
 }
 
-func gotoOffset(f *stack.Frame, offset int16)  {
+func gotoOffset(f *stack.Frame, offset int)  {
 	utils.Log("executing instruction goto")
 	t := f.Stack.Thread().(*thread.Thread)
 	nextpc := t.GetPC() + int(offset)

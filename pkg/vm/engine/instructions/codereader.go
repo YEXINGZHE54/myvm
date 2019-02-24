@@ -41,5 +41,11 @@ func (r *CodeReader) Read4() uint32 {
 }
 
 func (r *CodeReader) SkipPaddings() {
-	
+	for r.pc & 3 != 0 {
+		r.Read1()
+	}
+}
+
+func (r *CodeReader) Peek(l int) []byte {
+	return r.codes[r.pc:r.pc+l]
 }

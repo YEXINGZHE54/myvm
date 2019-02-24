@@ -5,12 +5,14 @@ import (
 	"github.com/YEXINGZHE54/myvm/pkg/utils"
 	myvm "github.com/YEXINGZHE54/myvm/pkg/vm"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/instructions"
+	"github.com/YEXINGZHE54/myvm/pkg/vm/engine/reflect"
 	"github.com/YEXINGZHE54/myvm/pkg/vm/memory/stack"
 	"github.com/kr/pretty"
 )
 
-func NewThread(max int, vm myvm.VM, class string, args []string) *Thread {
+func NewThread(max int, boot reflect.Loader, vm myvm.VM, class string, args []string) *Thread {
 	t := &Thread{
+		boot: boot,
 		vm: vm,
 		class: class,
 		args: args,

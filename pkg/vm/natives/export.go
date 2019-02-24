@@ -23,6 +23,10 @@ func LookUpNative(cls, name, desc string) (m NativeMethod, err error) {
 		m = empty
 		return 
 	}
+	if name == "initIDs" && desc == "()V" {
+		m = empty
+		return
+	}
 	err = ErrorNotFound
 	return
 }

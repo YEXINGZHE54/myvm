@@ -14,6 +14,7 @@ type (
 		classes map[string]*reflect.Class
 		cp *classpath.ClassPath
 		stringpool map[string]*reflect.Object
+		jObj *reflect.Object // Java Object Represent of This ClassLoader
 	}
 )
 
@@ -25,16 +26,22 @@ func NewLoader(bootPath, classPath string) (reflect.Loader) {
 	l := &loader{make(map[string]*reflect.Class),
 		classpath.ParseOption(bootPath, classPath),
 		make(map[string]*reflect.Object),
+		nil,
 	}
+	return l
+}
+
+func (l *loader) Init() error {
+	//TODO how to prepare loaderObject?
 	err := l.prepareReflect();
 	if err != nil {
-		panic(err)
+		return err
 	}
 	err = l.loadPrims()
 	if err != nil {
-		panic(err)
+		return err
 	}
-	return l
+	return nil
 }
 
 func (l *loader) readClass(cls string) (cf *classfile.ClassFile, err error) {
@@ -142,6 +149,8 @@ func (l *loader) LoadClass(cls string) (c *reflect.Class, err error) {
 			return
 		}
 		c.ClsObj.Extra = c
+		// sets up loader
+		setupLoader(ccls, c.ClsObj, l)
 	}
 	// finnaly record it
 	l.classes[cls] = c

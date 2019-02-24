@@ -13,4 +13,5 @@ import (
 	_ "github.com/YEXINGZHE54/myvm/pkg/vm/natives/throwable"
 	_ "github.com/YEXINGZHE54/myvm/pkg/vm/natives/security"
 	_ "github.com/YEXINGZHE54/myvm/pkg/vm/natives/java/io"
+	_ "github.com/YEXINGZHE54/myvm/pkg/vm/natives/java/lang"
 )

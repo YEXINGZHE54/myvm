@@ -12,6 +12,11 @@ import (
 )
 
 func (t *Thread) Run() (err error) {
+	defer t.recover()
+	err = t.boot.Init() // init loader
+	if err != nil {
+		return
+	}
 	err = t.initVMClass()
 	if err != nil {
 		return
@@ -20,7 +25,7 @@ func (t *Thread) Run() (err error) {
 }
 
 func (t *Thread) initVMClass() (err error) {
-	cls, err := t.vm.LoadClass("sun/misc/VM")
+	cls, err := t.boot.LoadClass("sun/misc/VM")
 	if err != nil {
 		return
 	}
@@ -30,7 +35,7 @@ func (t *Thread) initVMClass() (err error) {
 
 func (t *Thread) runMain() (err error) {
 	// prepare class method
-	c, err := t.vm.LoadClass(t.class)
+	c, err := t.boot.LoadClass(t.class)
 	if err != nil {
 		return
 	}
@@ -39,7 +44,7 @@ func (t *Thread) runMain() (err error) {
 		return
 	}
 	// prepare args
-	strclass, err := t.vm.LoadClass("java/lang/String")
+	strclass, err := t.boot.LoadClass("java/lang/String")
 	if err != nil {
 		return
 	}
@@ -88,23 +93,6 @@ func (t *Thread) prepareFrame(method *reflect.Method) (f *stack.Frame) {
 }
 
 func (t *Thread) loop() (err error) {
-	defer func() {
-		if r := recover(); r != nil {
-			if v, ok := r.(*reflect.Object); ok {
-				fmt.Println("Exception: ", v.Class.Name)
-				traces := v.Extra.([]*throwable.Trace)
-				for _, tr := range traces {
-					fmt.Printf("at %s.%s(%s:%d)\n", tr.ClassName, tr.MethodName, tr.FileName, tr.Line)
-				}
-			} else {
-				t.Dump()
-				pretty.Println(r)
-			}
-			var buf [40960]byte
-			n := runtime.Stack(buf[:], true)
-			println(string(buf[:n]))
-		}
-	}()
 	for t.stack.Current() != nil {
 		f := t.stack.Current()
 		method := f.GetMethod()
@@ -125,4 +113,30 @@ func (t *Thread) loop() (err error) {
 		inst.Exec(f)
 	}
 	return
+}
+
+func (t *Thread) recover() {
+		if r := recover(); r != nil {
+			if v, ok := r.(*reflect.Object); ok {
+				fmt.Println("Exception: ", v.Class.Name)
+				for _, fi := range v.Fields() {
+					switch val := fi.(type) {
+					case *reflect.Object:
+						if val.Class.Name == "java/lang/String" {
+							fmt.Println(val.GoString())
+						}
+					}
+				}
+				traces := v.Extra.([]*throwable.Trace)
+				for _, tr := range traces {
+					fmt.Printf("at %s.%s(%s:%d)\n", tr.ClassName, tr.MethodName, tr.FileName, tr.Line)
+				}
+			} else {
+				t.Dump()
+				pretty.Println(r)
+			}
+			var buf [40960]byte
+			n := runtime.Stack(buf[:], true)
+			println(string(buf[:n]))
+		}
 }

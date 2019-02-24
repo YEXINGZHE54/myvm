@@ -36,7 +36,7 @@ func (i *IfIcmpInst) Exec(f *stack.Frame) {
 	v2 := f.PopOpstackVal()
 	v1 := f.PopOpstackVal()
 	if i.f(v1, v2) {
-		gotoOffset(f, i.idx)
+		gotoOffset(f, int(i.idx))
 	}
 }
 

@@ -34,7 +34,7 @@ func (i *IfCondInst) Fetch(coder *instructions.CodeReader) {
 func (i *IfCondInst) Exec(f *stack.Frame) {
 	utils.Log("executing instruction ifcond")
 	if i.f(f.PopOpstackVal()) {
-		gotoOffset(f, i.idx)
+		gotoOffset(f, int(i.idx))
 	}
 }
 

@@ -8,6 +8,7 @@ type (
 		ResolveMethod(clsref *MethodRef) (err error)
 		ResolveIfaceMethod(clsref *MethodRef) (err error)
 		JString(val string) (o *Object, err error)
+		Init() error
 	}
 	Object struct {
 		fields interface{}
